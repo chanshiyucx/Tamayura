@@ -1,7 +1,9 @@
 {
   "name": "tamayura",
   "version": "0.1.0",
-  "private": true,
+  "description": "A awesome resume generator",
+  "author": "蝉時雨 <me@chanshiyu.com>",
+  "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
