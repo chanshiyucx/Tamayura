@@ -3,7 +3,7 @@
     <span>
       Made with by
       <a href="https://github.com/chanshiyucx/Tamayura">
-        <i class="fa fa-heartbeat" aria-hidden="true" />Tamayura </a
+        <i class="fa fa-heartbeat" aria-hidden="true" />Tamayura</a
       >.
     </span>
     <span>
