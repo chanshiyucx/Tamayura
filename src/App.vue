@@ -11,17 +11,18 @@
     />
     <div id="page-wrap" class="container">
       <div :class="['resume', openMenu && 'move']">
-        <Sidebar />
+        <Sidebar :basicInfo="basicInfo" :contact="contact" />
         <article>555</article>
       </div>
       <Footer />
     </div>
   </div>
 </template>
-
 <script>
 import { Push } from 'vue-burger-menu'
 import { Sidebar, Footer } from './components'
+import content from './resume.json'
+const { basicInfo, contact } = content
 export default {
   name: 'app',
   components: {
@@ -31,7 +32,9 @@ export default {
   },
   data() {
     return {
-      openMenu: false
+      openMenu: false,
+      basicInfo,
+      contact
     }
   },
   methods: {

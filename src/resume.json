@@ -1,0 +1,20 @@
+{
+  "basicInfo": {
+    "name": "蝉時雨",
+    "desc": "蝉鸣如雨，花宵道中",
+    "gender": "男",
+    "birthday": "8/16",
+    "avatar": "https://i.loli.net/2018/12/09/5c0cc2b4e0195.png",
+    "school": "UESTC",
+    "major": "WEB Developer",
+    "blog": "https://chanshiyu.com",
+    "github": "https://github.com/chanshiyucx"
+  },
+  "contact": {
+    "tel": "185xxxx8846",
+    "email": "me@chanshiyu.com",
+    "wechat": "ivancx123",
+    "qq": "1124590931",
+    "github": "https://github.com/chanshiyucx"
+  }
+}
