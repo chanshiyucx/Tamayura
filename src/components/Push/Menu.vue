@@ -19,12 +19,9 @@
     </div>
 
     <div class="bm-burger-button" @click="openMenu" :class="{ hidden: !burgerIcon }">
-      <span
-        class="bm-burger-bars line-style"
-        :style="{ top: 20 * (index * 2) + '%' }"
-        v-for="(x, index) in 3"
-        :key="index"
-      ></span>
+      <a class="button is-info is-focused is-rounded">
+        <span class="icon is-small"><i class="fas fa-user-edit"></i> </span> <span>编辑</span>
+      </a>
     </div>
   </div>
 </template>

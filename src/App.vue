@@ -10,7 +10,7 @@
       outerContainerId="app"
       width="400"
     >
-      <Edit :basicInfo="basicInfo" :contact="contact" />
+      <Edit :basicInfo="basicInfo" :contact="contact" @closeMenu="handleCloseMenu" />
     </Push>
     <div id="page-wrap" class="container">
       <div :class="['body', openMenu && 'move']">
