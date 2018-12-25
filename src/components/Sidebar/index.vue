@@ -6,7 +6,7 @@
       <p>{{ basicInfo.desc }}</p>
     </div>
     <div class="side">
-      <h2>联系方式</h2>
+      <h2>Concat 联系方式</h2>
       <ul>
         <li v-if="contact.tel">
           电话：<span>{{ contact.tel }}</span>
@@ -19,7 +19,6 @@
     <div class="side"><h2></h2></div>
   </div>
 </template>
-
 <script>
 export default {
   name: 'Sidebar',
