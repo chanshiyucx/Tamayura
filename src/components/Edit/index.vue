@@ -1,11 +1,16 @@
 <template>
   <div class="edit">
     <div class="btn-group">
-      <a class="button is-primary is-focused">
-        <span class="icon is-small"> <i class="fas fa-check"></i> </span> <span>保存</span>
-      </a>
-      <a class="button is-success is-focused">
-        <span class="icon is-small"><i class="fas fa-undo"></i> </span> <span>重置</span>
+      <div>
+        <a class="button is-primary is-focused is-rounded">
+          <span class="icon is-small"> <i class="fas fa-check"></i> </span> <span>保存</span>
+        </a>
+        <a class="button is-success is-focused is-rounded">
+          <span class="icon is-small"><i class="fas fa-undo"></i> </span> <span>重置</span>
+        </a>
+      </div>
+      <a class="button is-small is-danger is-focused is-rounded">
+        <span class="icon is-small"> <i class="fas fa-times"></i> </span>
       </a>
     </div>
     <Collapse :open="false">

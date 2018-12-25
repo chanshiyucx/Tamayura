@@ -24,9 +24,11 @@
   </div>
 </template>
 <script>
+import { localSave, localRead } from './tool'
 import { Sidebar, Footer, Edit, Push } from './components'
 import content from './resume.json'
 const { basicInfo, contact } = content
+
 export default {
   name: 'app',
   components: {
@@ -36,10 +38,11 @@ export default {
     Edit
   },
   data() {
+    const localContent = localRead('resume')
     return {
       openMenu: false,
-      basicInfo,
-      contact
+      basicInfo: localContent.basicInfo || basicInfo,
+      contact: localContent.contact || contact
     }
   },
   methods: {
@@ -48,6 +51,18 @@ export default {
     },
     handleCloseMenu() {
       this.openMenu = false
+    },
+    reset() {
+      this.basicInfo = basicInfo
+      this.contact = contact
+      this.save()
+    },
+    save() {
+      const resume = {
+        basicInfo: this.basicInfo,
+        contact: this.contact
+      }
+      localSave('resume', JSON.stringify(resume))
     }
   }
 }
