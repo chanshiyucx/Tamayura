@@ -2,6 +2,7 @@
   <div id="app">
     <Push
       :isOpen="openMenu"
+      :crossIcon="false"
       @openMenu="handleOpenMenu"
       @closeMenu="handleCloseMenu"
       noOverlay
@@ -23,8 +24,7 @@
   </div>
 </template>
 <script>
-import { Push } from 'vue-burger-menu'
-import { Sidebar, Footer, Edit } from './components'
+import { Sidebar, Footer, Edit, Push } from './components'
 import content from './resume.json'
 const { basicInfo, contact } = content
 export default {

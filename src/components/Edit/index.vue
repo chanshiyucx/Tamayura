@@ -1,13 +1,24 @@
 <template>
   <div class="edit">
-    <div class="box">
-      <h2>基本信息</h2>
-      <ul>
-        <li v-for="(item, i) in getBasicInfoList" :key="i">
-          <span>{{ item.label }}</span>
-        </li>
-      </ul>
+    <div class="btn-group">
+      <a class="button is-primary is-focused">
+        <span class="icon is-small"> <i class="fas fa-check"></i> </span> <span>保存</span>
+      </a>
+      <a class="button is-success is-focused">
+        <span class="icon is-small"><i class="fas fa-undo"></i> </span> <span>重置</span>
+      </a>
     </div>
+    <Collapse :open="false">
+      <button class="button is-primary" slot="trigger">Click me!</button>
+      <div class="box">
+        <h2>基本信息</h2>
+        <ul>
+          <li v-for="(item, i) in getBasicInfoList" :key="i">
+            <span>{{ item.label }}</span>
+          </li>
+        </ul>
+      </div>
+    </Collapse>
   </div>
 </template>
 <script>

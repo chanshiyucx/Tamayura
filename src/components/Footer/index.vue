@@ -1,10 +1,8 @@
 <template>
   <div class="footer">
     <span>
-      Made with by
-      <a href="https://github.com/chanshiyucx/Tamayura">
-        <i class="fa fa-heartbeat" aria-hidden="true" />Tamayura</a
-      >.
+      Made with <i class="fa fa-heartbeat" aria-hidden="true" /> by
+      <a href="https://github.com/chanshiyucx/Tamayura"> Tamayura</a>.
     </span>
     <span>
       Design by <a href="https://chanshiyu.com"><span>蝉時雨</span></a>
