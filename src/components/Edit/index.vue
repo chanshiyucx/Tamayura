@@ -2,10 +2,10 @@
   <div class="edit">
     <div class="btn-group">
       <div>
-        <a class="button is-primary is-focused is-rounded">
+        <a class="button is-primary is-focused is-rounded" @click="saveAll">
           <span class="icon is-small"> <i class="fas fa-check"></i> </span> <span>保存</span>
         </a>
-        <a class="button is-success is-focused is-rounded">
+        <a class="button is-success is-focused is-rounded" @click="reset">
           <span class="icon is-small"><i class="fas fa-undo"></i> </span> <span>重置</span>
         </a>
       </div>
@@ -26,13 +26,26 @@
       </div>
       <div class="card-content">
         <div v-for="(item, i) in getBasicInfoList" :key="i">
-          <b-icon :pack="item.pack" :icon="item.icon" size="is-small"> </b-icon
-          ><span>{{ item.label }}</span>
+          <b-field>
+            <b-input
+              v-model="editBasicinfo[item.key]"
+              :placeholder="`${item.label}（不填则不显示该栏）`"
+              :icon-pack="item.pack"
+              :icon="item.icon"
+              :disabled="!status.basicInfo.edit"
+            >
+            </b-input>
+          </b-field>
         </div>
       </div>
       <footer class="card-footer">
-        <a class="card-footer-item">Save</a> <a class="card-footer-item">Edit</a>
-        <a class="card-footer-item">Delete</a>
+        <a class="card-footer-item" @click="save('basicInfo')">保存</a>
+        <a class="card-footer-item" @click="edit('basicInfo')">
+          {{ status.basicInfo.edit ? '取消' : '编辑' }}
+        </a>
+        <a class="card-footer-item" @click="changeStatus('basicInfo')">
+          {{ status.basicInfo.hidden ? '显示' : '隐藏' }}
+        </a>
       </footer>
     </b-collapse>
     <b-collapse class="card">
@@ -41,7 +54,7 @@
           <b-icon pack="fas" icon="user" size="is-small"> </b-icon>基本信息
         </p>
         <a class="card-header-icon">
-          <b-icon pack="fab" :icon="props.open ? 'angle-down' : 'angle-up'" size="is-small">
+          <b-icon pack="fas" :icon="props.open ? 'angle-down' : 'angle-up'" size="is-small">
           </b-icon>
         </a>
       </div>
@@ -73,6 +86,7 @@ const editBasicInfo = {
 }
 
 const link = {
+  // 基本信息 BasicInfo
   name: {
     label: '姓名',
     icon: 'user-tie'
@@ -124,8 +138,14 @@ export default {
   },
   data() {
     return {
-      editBasicinfo: { ...editBasicInfo },
-      link
+      link,
+      status: {
+        basicInfo: {
+          edit: false,
+          hidden: false
+        }
+      },
+      editBasicinfo: { ...editBasicInfo }
     }
   },
   computed: {
@@ -143,14 +163,35 @@ export default {
     this.editBasicinfo = { ...this.basicInfo }
   },
   methods: {
-    getItem(key) {
-      return this.editBasicInfo[key]
-    },
+    // 保存所有信息
+    saveAll() {},
+    // 重置信息
     reset() {
       this.editBasicinfo = { ...this.basicInfo }
     },
+    //关闭编辑菜单
     handleClose() {
       this.$emit('closeMenu')
+    },
+    // 保存
+    save(type) {
+      // this.status[type]
+      // this.$snackbar.open(`Default, positioned bottom-left with a green 'OK' button`)
+      this.$snackbar.open({
+        duration: 2000,
+        message: '保存成功！o(*￣▽￣*)ブ',
+        type: 'is-success',
+        position: 'is-bottom-left',
+        actionText: 'OK',
+        queue: false
+      })
+    },
+    // 编辑
+    edit(type) {
+      this.status[type].edit = !this.status[type].edit
+    },
+    changeStatus(type) {
+      this.status[type].hidden = !this.status[type].hidden
     }
   }
 }
