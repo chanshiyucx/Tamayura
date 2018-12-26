@@ -83,11 +83,48 @@
         </a>
       </footer>
     </b-collapse>
+    <!-- 技能树 Skill -->
+    <b-collapse class="card">
+      <div slot="trigger" slot-scope="props" class="card-header">
+        <p class="card-header-title">
+          <b-icon pack="fab" icon="empire" size="is-small"> </b-icon>技能树
+        </p>
+        <a class="card-header-icon">
+          <b-icon pack="fas" :icon="props.open ? 'angle-down' : 'angle-up'" size="is-small">
+          </b-icon>
+        </a>
+      </div>
+      <div class="card-content">
+        <div class="skill-item" v-for="(item, i) in editSkill" :key="i">
+          <div class="skill-name">{{ item.name }}</div>
+          <vue-slider
+            v-model="item.proficiency"
+            :width="190"
+            :disabled="!status.skill.edit"
+            :tooltip="false"
+          ></vue-slider>
+          <div class="skill-precent">{{ item.proficiency }}%</div>
+        </div>
+      </div>
+      <footer class="card-footer">
+        <a class="card-footer-item" @click="save('skill')">保存</a>
+        <a class="card-footer-item" @click="edit('skill')">
+          {{ status.skill.edit ? '取消' : '编辑' }}
+        </a>
+        <a class="card-footer-item" @click="changeStatus('skill')">
+          {{ status.skill.hidden ? '显示' : '隐藏' }}
+        </a>
+      </footer>
+    </b-collapse>
   </div>
 </template>
 <script>
+import vueSlider from 'vue-slider-component'
 export default {
   name: 'Edit',
+  components: {
+    vueSlider
+  },
   props: {
     map: {
       type: Object
@@ -97,6 +134,9 @@ export default {
     },
     contact: {
       type: Object
+    },
+    skill: {
+      type: Array
     }
   },
   data() {
@@ -109,10 +149,15 @@ export default {
         contact: {
           edit: false,
           hidden: false
+        },
+        skill: {
+          edit: false,
+          hidden: false
         }
       },
       editBasicInfo: {},
-      editContact: {}
+      editContact: {},
+      editSkill: []
     }
   },
   computed: {
@@ -143,12 +188,15 @@ export default {
     },
     contact(val) {
       this.editContact = { ...val }
+    },
+    skill(val) {
+      this.editSkill = { ...val }
     }
   },
   created() {
     this.editBasicInfo = { ...this.basicInfo }
     this.editContact = { ...this.contact }
-    console.log('contact', this.contact)
+    this.editSkill = [...this.skill]
   },
   methods: {
     // 保存所有信息

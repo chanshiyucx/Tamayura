@@ -14,6 +14,7 @@
         :map="map"
         :basicInfo="basicInfo"
         :contact="contact"
+        :skill="skill"
         @closeMenu="handleCloseMenu"
         @save="save"
         @reset="reset"

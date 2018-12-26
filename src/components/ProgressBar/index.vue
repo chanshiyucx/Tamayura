@@ -53,12 +53,10 @@ export default {
   props: {
     diameter: {
       type: Number,
-      required: false,
       default: 106
     },
     totalSteps: {
       type: Number,
-      required: true,
       default: 100
     },
     completedSteps: {
@@ -68,12 +66,10 @@ export default {
     },
     startColor: {
       type: String,
-      required: false,
       default: '#bbff42'
     },
     stopColor: {
       type: String,
-      required: false,
       default: '#429321'
     },
     strokeWidth: {
