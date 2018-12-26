@@ -13,6 +13,23 @@
         <span class="icon is-small"> <i class="fas fa-times"></i> </span>
       </a>
     </div>
+    <!-- 主题设置 Theme -->
+    <b-collapse class="card" :open.sync="isOpen.theme">
+      <div class="card-header" slot="trigger">
+        <p class="card-header-title">
+          <b-icon pack="fas" icon="palette" size="is-small"> </b-icon>主题设置
+        </p>
+        <a class="card-header-icon">
+          <b-icon pack="fas" :icon="isOpen.theme ? 'angle-down' : 'angle-up'" size="is-small">
+          </b-icon>
+        </a>
+      </div>
+      <div class="card-content"><Sketch v-model="color" /></div>
+      <footer class="card-footer">
+        <a class="card-footer-item" @click="saveSetting">保存</a>
+        <a class="card-footer-item" @click="back">还原</a>
+      </footer>
+    </b-collapse>
     <!-- 基本信息 BasicInfo -->
     <b-collapse class="card" :open.sync="isOpen.basicInfo">
       <div class="card-header" slot="trigger">
@@ -124,10 +141,12 @@
 </template>
 <script>
 import vueSlider from 'vue-slider-component'
+import { Sketch } from 'vue-color'
 export default {
   name: 'Edit',
   components: {
-    vueSlider
+    vueSlider,
+    Sketch
   },
   props: {
     map: {
@@ -157,13 +176,22 @@ export default {
         skill: false
       },
       isOpen: {
+        theme: false,
         basicInfo: false,
         contact: false,
         skill: false
       },
       editBasicInfo: {},
       editContact: {},
-      editSkill: []
+      editSkill: [],
+      colorType: 'sidebar',
+      color: {
+        hex: '#8d9cd2',
+        hsl: { h: 227, s: 0.43, l: 0.69, a: 1 },
+        hsv: { h: 227, s: 0.33, v: 0.82, a: 1 },
+        rgba: { r: 141, g: 156, b: 210, a: 1 },
+        a: 1
+      }
     }
   },
   computed: {
@@ -189,6 +217,9 @@ export default {
     }
   },
   watch: {
+    color() {
+      this.$emit('setColor', { type: this.colorType, color: this.color })
+    },
     basicInfo(val) {
       this.editBasicInfo = { ...val }
     },
@@ -226,9 +257,13 @@ export default {
         }
       })
     },
-    //关闭编辑菜单
+    // 关闭编辑菜单
     handleClose() {
       this.$emit('closeMenu')
+    },
+    // 还原
+    back() {
+      this.$emit('back')
     },
     // 保存
     save(type) {
@@ -243,6 +278,18 @@ export default {
       }
       this.$emit('save', { type, data })
       this.isEdit[type] = false
+      this.$snackbar.open({
+        duration: 2000,
+        message: '保存成功！o(*￣▽￣*)ブ',
+        type: 'is-success',
+        position: 'is-bottom-left',
+        actionText: 'OK',
+        queue: false
+      })
+    },
+    // 保存设置
+    saveSetting() {
+      this.$emit('saveSetting')
       this.$snackbar.open({
         duration: 2000,
         message: '保存成功！o(*￣▽￣*)ブ',

@@ -73,5 +73,10 @@
     "React": {
       "color": "#d43a43"
     }
+  },
+  "setting": {
+    "color": {
+      "sidebar": "#8d9cd2"
+    }
   }
 }

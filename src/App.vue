@@ -20,6 +20,9 @@
         @save="save"
         @reset="reset"
         @toggleHidden="toggleHidden"
+        @setColor="setColor"
+        @saveSetting="saveSetting"
+        @back="back"
       />
     </Push>
     <div id="page-wrap" class="container">
@@ -28,6 +31,7 @@
           <Sidebar
             :map="map"
             :hidden="hidden"
+            :color="color"
             :basicInfo="basicInfo"
             :contact="contact"
             :skill="skill"
@@ -44,7 +48,11 @@ import { localSave, localRead } from './tool'
 import { Sidebar, Footer, Edit, Push } from './components'
 import content from './resume.json'
 import map from './map.json'
+
 const { basicInfo, contact, skill } = content
+const localContent = localRead('resume') ? JSON.parse(localRead('resume')) : {}
+const setting = localRead('setting') ? JSON.parse(localRead('setting')) : {}
+const { hidden = { skill: false }, color } = setting
 
 export default {
   name: 'app',
@@ -55,13 +63,11 @@ export default {
     Edit
   },
   data() {
-    const localContent = localRead('resume') ? JSON.parse(localRead('resume')) : {}
-    const setting = localRead('setting') ? JSON.parse(localRead('setting')) : {}
-    const { hidden = { skill: false } } = setting
     return {
       map,
       openMenu: false,
       hidden,
+      color: { ...color } || map.setting.color,
       basicInfo: localContent.basicInfo || basicInfo,
       contact: localContent.contact || contact,
       skill: localContent.skill || skill
@@ -84,26 +90,41 @@ export default {
     },
     // 保存所有
     saveAll() {
-      const resume = {
-        basicInfo: this.basicInfo,
-        contact: this.contact
-      }
-      localSave('resume', JSON.stringify(resume))
+      this.saveResume()
+      this.saveSetting()
     },
     // 保存
     save({ type, data }) {
       this[type] = data
-      this.saveAll()
+      this.saveResume()
+    },
+    //还原
+    back() {
+      this.color = { ...map.setting.color }
+      this.saveSetting()
     },
     // 显示/隐藏
     toggleHidden({ type, hidden }) {
       this.hidden[type] = hidden
       this.saveSetting()
     },
+    // 设置颜色
+    setColor({ type, color }) {
+      this.color[type] = color
+    },
+    // 保存个人信息
+    saveResume() {
+      const resume = {
+        basicInfo: this.basicInfo,
+        contact: this.contact
+      }
+      localSave('resume', JSON.stringify(resume))
+    },
     // 保存设置
     saveSetting() {
       const setting = {
-        hidden: this.hidden
+        hidden: this.hidden,
+        color: this.color
       }
       localSave('setting', JSON.stringify(setting))
     }

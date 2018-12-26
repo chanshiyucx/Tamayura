@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar">
+  <div class="sidebar" :style="{ backgroundColor: color.sidebar.hex8 }">
     <div class="avatar-wrap">
       <img :src="basicInfo.avatar" alt="" />
       <h1>{{ basicInfo.name }}</h1>
@@ -54,6 +54,9 @@ export default {
       type: Object
     },
     hidden: {
+      type: Object
+    },
+    color: {
       type: Object
     },
     basicInfo: {
