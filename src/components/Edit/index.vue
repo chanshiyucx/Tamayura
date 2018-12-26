@@ -54,7 +54,7 @@
         <div v-for="(item, i) in getBasicInfoList" :key="i">
           <b-field>
             <b-input
-              v-model="editBasicInfo[item.key]"
+              v-model="basicInfo[item.key]"
               :placeholder="`${item.label}（不填则不显示该栏）`"
               :icon-pack="item.pack"
               :icon="item.icon"
@@ -86,7 +86,7 @@
         <div v-for="(item, i) in getContactList" :key="i">
           <b-field>
             <b-input
-              v-model="editContact[item.key]"
+              v-model="contact[item.key]"
               :placeholder="`${item.label}（不填则不显示该栏）`"
               :icon-pack="item.pack"
               :icon="item.icon"
@@ -115,7 +115,7 @@
         </a>
       </div>
       <div class="card-content">
-        <div class="skill-item" v-for="(item, i) in editSkill" :key="i">
+        <div class="skill-item" v-for="(item, i) in skill" :key="i">
           <div class="skill-name">{{ item.name }}</div>
           <vue-slider
             v-if="isOpen.skill"
@@ -142,7 +142,7 @@
           {{ isEdit.skill ? '取消' : '编辑' }}
         </a>
         <a class="card-footer-item" @click="toggleHidden('skill')">
-          {{ isHidden.skill ? '显示' : '隐藏' }}
+          {{ hidden.skill ? '显示' : '隐藏' }}
         </a>
       </footer>
     </b-collapse>
@@ -151,6 +151,7 @@
 <script>
 import vueSlider from 'vue-slider-component'
 import { Sketch } from 'vue-color'
+
 export default {
   name: 'Edit',
   components: {
@@ -184,18 +185,12 @@ export default {
         contact: false,
         skill: false
       },
-      isHidden: {
-        skill: false
-      },
       isOpen: {
         theme: false,
         basicInfo: false,
         contact: false,
         skill: false
       },
-      editBasicInfo: {},
-      editContact: {},
-      editSkill: [],
       colorType: 'sidebar',
       pickColor: {
         hex: '#8d9cd2',
@@ -203,56 +198,51 @@ export default {
         hsv: { h: 227, s: 0.33, v: 0.82, a: 1 },
         rgba: { r: 141, g: 156, b: 210, a: 1 },
         a: 1
-      }
+      },
+      // 快照
+      snapshot: {}
     }
   },
   computed: {
     getBasicInfoList() {
       const link = this.map.basicInfo
-      return Object.keys(this.editBasicInfo).map(k => ({
+      return Object.keys(this.basicInfo).map(k => ({
         key: k,
         label: link[k].label,
         icon: link[k].icon,
         pack: link[k].pack || 'fas',
-        value: this.editBasicInfo[k]
+        value: this.basicInfo[k]
       }))
     },
     getContactList() {
       const link = this.map.contact
-      return Object.keys(this.editContact).map(k => ({
+      return Object.keys(this.contact).map(k => ({
         key: k,
         label: link[k].label,
         icon: link[k].icon,
         pack: link[k].pack || 'fas',
-        value: this.editContact[k]
+        value: this.contact[k]
       }))
     }
   },
   watch: {
     pickColor(val) {
+      // console.log('val-->', val, shadeBlendConvert(-0.5, val.hex, 'c'))
       this.$emit('setColor', { type: this.colorType, color: val.hex8 })
-    },
-    basicInfo(val) {
-      this.editBasicInfo = { ...val }
-    },
-    contact(val) {
-      this.editContact = { ...val }
-    },
-    skill(val) {
-      this.editSkill = { ...val }
     }
   },
   created() {
-    this.editBasicInfo = { ...this.basicInfo }
-    this.editContact = { ...this.contact }
-    // TODO: 技能树可以直接修改，BUG or Feature?
-    this.editSkill = [...this.skill]
-    this.isHidden = { ...this.hidden }
+    const props = ['basicInfo', 'contact', 'skill']
+    props.forEach(k => this.takeSnapShot(k))
   },
   methods: {
-    // 保存所有信息
-    saveAll() {
-      this.$emit('saveAll')
+    // 保存快照
+    takeSnapShot(type) {
+      this.snapshot[type] = JSON.parse(JSON.stringify(this[type]))
+    },
+    // 关闭编辑菜单
+    handleClose() {
+      this.$emit('handleCloseMenu')
     },
     // 重置信息
     reset() {
@@ -267,9 +257,20 @@ export default {
         }
       })
     },
-    // 关闭编辑菜单
-    handleClose() {
-      this.$emit('closeMenu')
+    // 保存所有信息
+    saveAll() {
+      this.$emit('saveAll')
+    },
+    // 保存
+    save(type) {
+      this.$emit('save', { type })
+      this.isEdit[type] = false
+      this.snackbarMsg()
+    },
+    // 保存设置
+    saveSetting() {
+      this.$emit('saveSetting')
+      this.snackbarMsg()
     },
     // 还原
     back() {
@@ -284,51 +285,21 @@ export default {
         }
       })
     },
-    // 保存
-    save(type) {
-      let data
-      switch (type) {
-        case 'basicInfo':
-          data = this.editBasicInfo
-          break
-        case 'contact':
-          data = this.editContact
-          break
-        case 'skill':
-          data = this.editSkill
-          break
-      }
-      this.$emit('save', { type, data })
-      this.isEdit[type] = false
-      this.snackbarMsg()
-    },
-    // 保存设置
-    saveSetting() {
-      this.$emit('saveSetting')
-      this.snackbarMsg()
-    },
     // 编辑
     edit(type) {
       this.isEdit[type] = !this.isEdit[type]
-      if (!this.isEdit[type].edit) {
-        switch (type) {
-          case 'basicInfo':
-            this.editBasicInfo = this.basicInfo
-            break
-          case 'contact':
-            this.editContact = this.contact
-            break
-          case 'skill':
-            this.editSkill = this.skill
-            break
-        }
+      if (!this.isEdit[type]) {
+        // 还原上一次快照
+        this.$emit('save', { type, data: this.snapshot[type] })
+      } else {
+        this.takeSnapShot(type)
       }
     },
     // 显示/隐藏
     toggleHidden(type) {
-      this.isHidden[type] = !this.isHidden[type]
+      this.hidden[type] = !this.hidden[type]
       if (type !== 'basicInfo' && type !== 'contact') {
-        this.$emit('toggleHidden', { type, hidden: this.isHidden[type] })
+        this.$emit('saveSetting')
       }
     },
     // 技能进度格式化

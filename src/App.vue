@@ -17,14 +17,13 @@
         :basicInfo="basicInfo"
         :contact="contact"
         :skill="skill"
-        @closeMenu="handleCloseMenu"
-        @save="save"
+        @handleCloseMenu="handleCloseMenu"
         @reset="reset"
-        @toggleHidden="toggleHidden"
-        @setColor="setColor"
         @saveAll="saveAll"
+        @save="save"
         @saveSetting="saveSetting"
         @back="back"
+        @setColor="setColor"
       />
     </Push>
     <div id="page-wrap" class="container">
@@ -69,7 +68,7 @@ export default {
       map,
       openMenu: false,
       hidden,
-      color: { ...color } || map.setting.color,
+      color: color || map.setting.color,
       basicInfo: localContent.basicInfo || basicInfo,
       contact: localContent.contact || contact,
       skill: localContent.skill || skill
@@ -95,19 +94,14 @@ export default {
       this.saveResume()
       this.saveSetting()
     },
-    // 保存
+    // 保存或还原快照
     save({ type, data }) {
-      this[type] = data
+      this[type] = data || this[type]
       this.saveResume()
     },
     //还原
     back() {
       this.color = { ...map.setting.color }
-      this.saveSetting()
-    },
-    // 显示/隐藏
-    toggleHidden({ type, hidden }) {
-      this.hidden[type] = hidden
       this.saveSetting()
     },
     // 设置颜色
@@ -118,7 +112,8 @@ export default {
     saveResume() {
       const resume = {
         basicInfo: this.basicInfo,
-        contact: this.contact
+        contact: this.contact,
+        skill: this.skill
       }
       localSave('resume', JSON.stringify(resume))
     },
