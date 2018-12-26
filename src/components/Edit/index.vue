@@ -151,6 +151,7 @@
 <script>
 import vueSlider from 'vue-slider-component'
 import { Sketch } from 'vue-color'
+import Color from 'color'
 
 export default {
   name: 'Edit',
@@ -227,8 +228,15 @@ export default {
   },
   watch: {
     pickColor(val) {
-      // console.log('val-->', val, shadeBlendConvert(-0.5, val.hex, 'c'))
-      this.$emit('setColor', { type: this.colorType, color: val.hex8 })
+      let color = val.rgba
+      let alpha = color.a
+      delete color.a
+      color.alpha = alpha
+
+      const newColor = Color(color)
+      // .lighten(0.6)
+      // .fade(0.5)
+      this.$emit('setColor', { type: this.colorType, color: newColor })
     }
   },
   created() {
