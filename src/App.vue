@@ -58,7 +58,6 @@ export default {
     const localContent = localRead('resume') ? JSON.parse(localRead('resume')) : {}
     const setting = localRead('setting') ? JSON.parse(localRead('setting')) : {}
     const { hidden = { skill: false } } = setting
-    console.log('hidden', hidden)
     return {
       map,
       openMenu: false,

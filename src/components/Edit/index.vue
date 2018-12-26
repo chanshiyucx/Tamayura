@@ -14,13 +14,13 @@
       </a>
     </div>
     <!-- 基本信息 BasicInfo -->
-    <b-collapse class="card">
-      <div slot="trigger" slot-scope="props" class="card-header">
+    <b-collapse class="card" :open.sync="isOpen.basicInfo">
+      <div class="card-header" slot="trigger">
         <p class="card-header-title">
           <b-icon pack="fas" icon="user" size="is-small"> </b-icon>基本信息
         </p>
         <a class="card-header-icon">
-          <b-icon pack="fas" :icon="props.open ? 'angle-down' : 'angle-up'" size="is-small">
+          <b-icon pack="fas" :icon="isOpen.basicInfo ? 'angle-down' : 'angle-up'" size="is-small">
           </b-icon>
         </a>
       </div>
@@ -46,13 +46,13 @@
       </footer>
     </b-collapse>
     <!-- 联系方式 Contact -->
-    <b-collapse class="card">
-      <div slot="trigger" slot-scope="props" class="card-header">
+    <b-collapse class="card" :open.sync="isOpen.contact">
+      <div class="card-header" slot="trigger">
         <p class="card-header-title">
           <b-icon pack="fas" icon="mobile-alt" size="is-small"> </b-icon>联系方式
         </p>
         <a class="card-header-icon">
-          <b-icon pack="fas" :icon="props.open ? 'angle-down' : 'angle-up'" size="is-small">
+          <b-icon pack="fas" :icon="isOpen.contact ? 'angle-down' : 'angle-up'" size="is-small">
           </b-icon>
         </a>
       </div>
@@ -78,13 +78,13 @@
       </footer>
     </b-collapse>
     <!-- 技能树 Skill -->
-    <b-collapse class="card">
-      <div slot="trigger" slot-scope="props" class="card-header">
+    <b-collapse class="card" :open.sync="isOpen.skill">
+      <div class="card-header" slot="trigger">
         <p class="card-header-title">
           <b-icon pack="fab" icon="empire" size="is-small"> </b-icon>技能树
         </p>
         <a class="card-header-icon">
-          <b-icon pack="fas" :icon="props.open ? 'angle-down' : 'angle-up'" size="is-small">
+          <b-icon pack="fas" :icon="isOpen.skill ? 'angle-down' : 'angle-up'" size="is-small">
           </b-icon>
         </a>
       </div>
@@ -92,6 +92,7 @@
         <div class="skill-item" v-for="(item, i) in editSkill" :key="i">
           <div class="skill-name">{{ item.name }}</div>
           <vue-slider
+            v-if="isOpen.skill"
             v-model="item.proficiency"
             tooltip="hover"
             :width="190"
@@ -153,6 +154,11 @@ export default {
         skill: false
       },
       isHidden: {
+        skill: false
+      },
+      isOpen: {
+        basicInfo: false,
+        contact: false,
         skill: false
       },
       editBasicInfo: {},
