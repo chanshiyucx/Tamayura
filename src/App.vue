@@ -13,6 +13,7 @@
       <Edit
         :map="map"
         :hidden="hidden"
+        :color="color"
         :basicInfo="basicInfo"
         :contact="contact"
         :skill="skill"
@@ -21,6 +22,7 @@
         @reset="reset"
         @toggleHidden="toggleHidden"
         @setColor="setColor"
+        @saveAll="saveAll"
         @saveSetting="saveSetting"
         @back="back"
       />

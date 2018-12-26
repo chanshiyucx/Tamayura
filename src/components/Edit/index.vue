@@ -24,7 +24,16 @@
           </b-icon>
         </a>
       </div>
-      <div class="card-content"><Sketch v-model="color" /></div>
+      <div class="card-content">
+        <ul>
+          <li class="setting-item">
+            <span>背景色：</span>
+            <span class="color-box" :style="{ backgroundColor: color.sidebar }"></span>
+          </li>
+        </ul>
+
+        <Sketch v-model="pickColor" />
+      </div>
       <footer class="card-footer">
         <a class="card-footer-item" @click="saveSetting">保存</a>
         <a class="card-footer-item" @click="back">还原</a>
@@ -155,6 +164,9 @@ export default {
     hidden: {
       type: Object
     },
+    color: {
+      type: Object
+    },
     basicInfo: {
       type: Object
     },
@@ -185,7 +197,7 @@ export default {
       editContact: {},
       editSkill: [],
       colorType: 'sidebar',
-      color: {
+      pickColor: {
         hex: '#8d9cd2',
         hsl: { h: 227, s: 0.43, l: 0.69, a: 1 },
         hsv: { h: 227, s: 0.33, v: 0.82, a: 1 },
@@ -217,8 +229,8 @@ export default {
     }
   },
   watch: {
-    color() {
-      this.$emit('setColor', { type: this.colorType, color: this.color })
+    pickColor(val) {
+      this.$emit('setColor', { type: this.colorType, color: val.hex8 })
     },
     basicInfo(val) {
       this.editBasicInfo = { ...val }
@@ -239,21 +251,19 @@ export default {
   },
   methods: {
     // 保存所有信息
-    saveAll() {},
+    saveAll() {
+      this.$emit('saveAll')
+    },
     // 重置信息
     reset() {
-      this.$dialog.confirm({
-        title: '提示',
+      this.dialog({
         message: '是否将所有信息重置为 <b>初始状态</b> 喵？若如此则将清空已保存信息。',
-        cancelText: '取消',
-        confirmText: '确定',
-        type: 'is-danger',
-        iconPack: 'fas',
-        icon: 'exclamation-circle',
-        hasIcon: true,
-        onConfirm: () => {
+        callback: () => {
           this.$emit('reset')
-          this.$toast.open('重置成功!')
+          this.$toast.open({
+            message: '重置成功!',
+            type: 'is-success'
+          })
         }
       })
     },
@@ -263,7 +273,16 @@ export default {
     },
     // 还原
     back() {
-      this.$emit('back')
+      this.dialog({
+        message: '是否将所有主题配置还原为 <b>初始状态</b> 喵？若如此则将清空已保存设置。',
+        callback: () => {
+          this.$emit('back')
+          this.$toast.open({
+            message: '还原成功!',
+            type: 'is-success'
+          })
+        }
+      })
     },
     // 保存
     save(type) {
@@ -275,29 +294,18 @@ export default {
         case 'contact':
           data = this.editContact
           break
+        case 'skill':
+          data = this.editSkill
+          break
       }
       this.$emit('save', { type, data })
       this.isEdit[type] = false
-      this.$snackbar.open({
-        duration: 2000,
-        message: '保存成功！o(*￣▽￣*)ブ',
-        type: 'is-success',
-        position: 'is-bottom-left',
-        actionText: 'OK',
-        queue: false
-      })
+      this.snackbarMsg()
     },
     // 保存设置
     saveSetting() {
       this.$emit('saveSetting')
-      this.$snackbar.open({
-        duration: 2000,
-        message: '保存成功！o(*￣▽￣*)ブ',
-        type: 'is-success',
-        position: 'is-bottom-left',
-        actionText: 'OK',
-        queue: false
-      })
+      this.snackbarMsg()
     },
     // 编辑
     edit(type) {
@@ -332,6 +340,31 @@ export default {
       else if (value >= 60 && value < 80) tip = '熟悉'
       else if (value >= 80) tip = '精通 '
       return tip
+    },
+    // 消息提示
+    snackbarMsg() {
+      this.$snackbar.open({
+        duration: 2000,
+        message: '保存成功！o(*￣▽￣*)ブ',
+        type: 'is-success',
+        position: 'is-bottom-left',
+        actionText: 'OK',
+        queue: false
+      })
+    },
+    // 确认弹窗
+    dialog({ message, callback }) {
+      this.$dialog.confirm({
+        title: '提示',
+        message,
+        cancelText: '取消',
+        confirmText: '确定',
+        type: 'is-danger',
+        iconPack: 'fas',
+        icon: 'exclamation-circle',
+        hasIcon: true,
+        onConfirm: callback
+      })
     }
   }
 }

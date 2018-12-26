@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar" :style="{ backgroundColor: color.sidebar.hex8 }">
+  <div class="sidebar" :style="{ backgroundColor: color.sidebar }">
     <div class="avatar-wrap">
       <img :src="basicInfo.avatar" alt="" />
       <h1>{{ basicInfo.name }}</h1>
