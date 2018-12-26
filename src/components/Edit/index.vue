@@ -99,9 +99,14 @@
           <div class="skill-name">{{ item.name }}</div>
           <vue-slider
             v-model="item.proficiency"
+            tooltip="hover"
             :width="190"
             :disabled="!status.skill.edit"
-            :tooltip="false"
+            :formatter="formatter"
+            :processStyle="{
+              backgroundImage: '-webkit-linear-gradient(left, #ff8dde, #3498db)'
+            }"
+            :tooltipStyle="tooltipStyle"
           ></vue-slider>
           <div class="skill-precent">{{ item.proficiency }}%</div>
         </div>
@@ -157,7 +162,12 @@ export default {
       },
       editBasicInfo: {},
       editContact: {},
-      editSkill: []
+      editSkill: [],
+      tooltipStyle: {
+        backgroundColor: 'rgba(200, 82, 235, 0.6)',
+        borderColor: 'rgba(200, 82, 235, 0.6)',
+        borderWidth: 0
+      }
     }
   },
   computed: {
@@ -196,6 +206,7 @@ export default {
   created() {
     this.editBasicInfo = { ...this.basicInfo }
     this.editContact = { ...this.contact }
+    // TODO: 技能树可以直接修改，BUG or Feature?
     this.editSkill = [...this.skill]
   },
   methods: {
@@ -248,6 +259,16 @@ export default {
     },
     changeStatus(type) {
       this.status[type].hidden = !this.status[type].hidden
+    },
+    // 技能进度格式化
+    formatter(value) {
+      let text = ''
+      if (value < 20) text = '萌新'
+      else if (value >= 20 && value < 40) text = '了解'
+      else if (value >= 40 && value < 60) text = '入门'
+      else if (value >= 60 && value < 80) text = '熟悉'
+      else if (value >= 80) text = '精通 '
+      return text
     }
   }
 }
