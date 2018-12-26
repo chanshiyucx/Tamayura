@@ -15,5 +15,11 @@
     "qq": "1124590931",
     "blog": "https://chanshiyu.com",
     "github": "https://github.com/chanshiyucx"
-  }
+  },
+  "skill": [
+    { "name": "JavaScript", "proficiency": 80 },
+    { "name": "Nodejs", "proficiency": 60 },
+    { "name": "CSS3", "proficiency": 70 },
+    { "name": "React", "proficiency": 77 }
+  ]
 }

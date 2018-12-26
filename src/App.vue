@@ -22,7 +22,7 @@
     <div id="page-wrap" class="container">
       <div :class="['body', openMenu && 'move']">
         <div class="resume">
-          <Sidebar :map="map" :basicInfo="basicInfo" :contact="contact" />
+          <Sidebar :map="map" :basicInfo="basicInfo" :contact="contact" :skill="skill" />
           <article>555</article>
         </div>
         <Footer />
@@ -35,7 +35,7 @@ import { localSave, localRead } from './tool'
 import { Sidebar, Footer, Edit, Push } from './components'
 import content from './resume.json'
 import map from './map.json'
-const { basicInfo, contact } = content
+const { basicInfo, contact, skill } = content
 
 export default {
   name: 'app',
@@ -51,7 +51,8 @@ export default {
       map,
       openMenu: false,
       basicInfo: localContent.basicInfo || basicInfo,
-      contact: localContent.contact || contact
+      contact: localContent.contact || contact,
+      skill: localContent.skill || skill
     }
   },
   methods: {

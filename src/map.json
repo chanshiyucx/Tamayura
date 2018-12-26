@@ -59,5 +59,19 @@
       "pack": "fab",
       "type": "link"
     }
+  },
+  "skill": {
+    "JavaScript": {
+      "color": "#45aeea"
+    },
+    "Nodejs": {
+      "color": "#d2d558"
+    },
+    "CSS3": {
+      "color": "#efb918"
+    },
+    "React": {
+      "color": "#d43a43"
+    }
   }
 }
