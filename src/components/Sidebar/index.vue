@@ -6,13 +6,21 @@
       <p>{{ basicInfo.desc }}</p>
     </div>
     <div class="side">
+      <h2>Basic 基本信息</h2>
+      <ul>
+        <li v-for="(item, i) in getBasicInfoList" :key="i">
+          {{ item.label }}：<span>{{ item.value }}</span>
+        </li>
+      </ul>
+    </div>
+    <div class="side">
       <h2>Concat 联系方式</h2>
       <ul>
-        <li v-if="contact.tel">
-          电话：<span>{{ contact.tel }}</span>
-        </li>
-        <li v-if="contact.email">
-          邮箱：<span>{{ contact.email }}</span>
+        <li v-for="(item, i) in getContactList" :key="i">
+          {{ item.label }}：<a v-if="item.type === 'link'" :href="item.value" target="_blank">{{
+            item.value
+          }}</a>
+          <span v-else>{{ item.value }}</span>
         </li>
       </ul>
     </div>
@@ -23,6 +31,9 @@
 export default {
   name: 'Sidebar',
   props: {
+    map: {
+      type: Object
+    },
     basicInfo: {
       type: Object
     },
@@ -32,6 +43,33 @@ export default {
   },
   data() {
     return {}
+  },
+  computed: {
+    getBasicInfoList() {
+      const link = this.map.basicInfo
+      return Object.keys(this.basicInfo)
+        .filter(k => k !== 'name' && k !== 'desc' && k !== 'avatar' && !!this.basicInfo[k])
+        .map(k => ({
+          key: k,
+          label: link[k].label,
+          icon: link[k].icon,
+          pack: link[k].pack || 'fas',
+          value: this.basicInfo[k]
+        }))
+    },
+    getContactList() {
+      const link = this.map.contact
+      return Object.keys(this.contact)
+        .filter(k => !!this.contact[k])
+        .map(k => ({
+          key: k,
+          label: link[k].label,
+          icon: link[k].icon,
+          pack: link[k].pack || 'fas',
+          type: link[k].type || 'text',
+          value: this.contact[k]
+        }))
+    }
   }
 }
 </script>

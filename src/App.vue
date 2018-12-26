@@ -10,12 +10,19 @@
       outerContainerId="app"
       width="400"
     >
-      <Edit :basicInfo="basicInfo" :contact="contact" @closeMenu="handleCloseMenu" />
+      <Edit
+        :map="map"
+        :basicInfo="basicInfo"
+        :contact="contact"
+        @closeMenu="handleCloseMenu"
+        @save="save"
+        @reset="reset"
+      />
     </Push>
     <div id="page-wrap" class="container">
       <div :class="['body', openMenu && 'move']">
         <div class="resume">
-          <Sidebar :basicInfo="basicInfo" :contact="contact" />
+          <Sidebar :map="map" :basicInfo="basicInfo" :contact="contact" />
           <article>555</article>
         </div>
         <Footer />
@@ -27,6 +34,7 @@
 import { localSave, localRead } from './tool'
 import { Sidebar, Footer, Edit, Push } from './components'
 import content from './resume.json'
+import map from './map.json'
 const { basicInfo, contact } = content
 
 export default {
@@ -38,31 +46,41 @@ export default {
     Edit
   },
   data() {
-    const localContent = localRead('resume')
+    const localContent = localRead('resume') ? JSON.parse(localRead('resume')) : {}
     return {
+      map,
       openMenu: false,
       basicInfo: localContent.basicInfo || basicInfo,
       contact: localContent.contact || contact
     }
   },
   methods: {
+    // 打开菜单
     handleOpenMenu() {
       this.openMenu = true
     },
+    // 关闭菜单
     handleCloseMenu() {
       this.openMenu = false
     },
+    // 重置
     reset() {
       this.basicInfo = basicInfo
       this.contact = contact
-      this.save()
+      this.saveAll()
     },
-    save() {
+    // 保存所有
+    saveAll() {
       const resume = {
         basicInfo: this.basicInfo,
         contact: this.contact
       }
       localSave('resume', JSON.stringify(resume))
+    },
+    // 保存
+    save({ type, data }) {
+      this[type] = data
+      this.saveAll()
     }
   }
 }

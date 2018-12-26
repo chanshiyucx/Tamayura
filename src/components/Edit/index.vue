@@ -28,7 +28,7 @@
         <div v-for="(item, i) in getBasicInfoList" :key="i">
           <b-field>
             <b-input
-              v-model="editBasicinfo[item.key]"
+              v-model="editBasicInfo[item.key]"
               :placeholder="`${item.label}（不填则不显示该栏）`"
               :icon-pack="item.pack"
               :icon="item.icon"
@@ -48,10 +48,11 @@
         </a>
       </footer>
     </b-collapse>
+    <!-- 联系方式 Contact -->
     <b-collapse class="card">
       <div slot="trigger" slot-scope="props" class="card-header">
         <p class="card-header-title">
-          <b-icon pack="fas" icon="user" size="is-small"> </b-icon>基本信息
+          <b-icon pack="fas" icon="mobile-alt" size="is-small"> </b-icon>联系方式
         </p>
         <a class="card-header-icon">
           <b-icon pack="fas" :icon="props.open ? 'angle-down' : 'angle-up'" size="is-small">
@@ -59,115 +60,115 @@
         </a>
       </div>
       <div class="card-content">
-        <div class="content">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
-          <a>#buefy</a>.
+        <div v-for="(item, i) in getContactList" :key="i">
+          <b-field>
+            <b-input
+              v-model="editContact[item.key]"
+              :placeholder="`${item.label}（不填则不显示该栏）`"
+              :icon-pack="item.pack"
+              :icon="item.icon"
+              :disabled="!status.contact.edit"
+            >
+            </b-input>
+          </b-field>
         </div>
       </div>
       <footer class="card-footer">
-        <a class="card-footer-item">Save</a> <a class="card-footer-item">Edit</a>
-        <a class="card-footer-item">Delete</a>
+        <a class="card-footer-item" @click="save('contact')">保存</a>
+        <a class="card-footer-item" @click="edit('contact')">
+          {{ status.contact.edit ? '取消' : '编辑' }}
+        </a>
+        <a class="card-footer-item" @click="changeStatus('contact')">
+          {{ status.contact.hidden ? '显示' : '隐藏' }}
+        </a>
       </footer>
     </b-collapse>
   </div>
 </template>
 <script>
-// 基本信息
-const editBasicInfo = {
-  name: '',
-  desc: '',
-  gender: '',
-  birthday: '',
-  avatar: '',
-  school: '',
-  major: '',
-  blog: '',
-  github: ''
-}
-
-const link = {
-  // 基本信息 BasicInfo
-  name: {
-    label: '姓名',
-    icon: 'user-tie'
-  },
-  desc: {
-    label: '格言',
-    icon: 'paper-plane'
-  },
-  gender: {
-    label: '性别',
-    icon: 'transgender'
-  },
-  birthday: {
-    label: '生日',
-    icon: 'birthday-cake'
-  },
-  avatar: {
-    label: '头像',
-    icon: 'user-circle'
-  },
-  school: {
-    label: '学校',
-    icon: 'graduation-cap'
-  },
-  major: {
-    label: '职业',
-    icon: 'briefcase'
-  },
-  blog: {
-    label: '博客',
-    icon: 'rss'
-  },
-  github: {
-    label: 'Github',
-    icon: 'github',
-    pack: 'fab'
-  }
-}
-
 export default {
   name: 'Edit',
   props: {
+    map: {
+      type: Object
+    },
     basicInfo: {
       type: Object
     },
-    closeMenu: {
-      type: Function
+    contact: {
+      type: Object
     }
   },
   data() {
     return {
-      link,
       status: {
         basicInfo: {
           edit: false,
           hidden: false
+        },
+        contact: {
+          edit: false,
+          hidden: false
         }
       },
-      editBasicinfo: { ...editBasicInfo }
+      editBasicInfo: {},
+      editContact: {}
     }
   },
   computed: {
     getBasicInfoList() {
-      return Object.keys(this.editBasicinfo).map(k => ({
+      const link = this.map.basicInfo
+      return Object.keys(this.editBasicInfo).map(k => ({
         key: k,
         label: link[k].label,
         icon: link[k].icon,
         pack: link[k].pack || 'fas',
-        value: this.editBasicinfo[k]
+        value: this.editBasicInfo[k]
+      }))
+    },
+    getContactList() {
+      const link = this.map.contact
+      return Object.keys(this.editContact).map(k => ({
+        key: k,
+        label: link[k].label,
+        icon: link[k].icon,
+        pack: link[k].pack || 'fas',
+        value: this.editContact[k]
       }))
     }
   },
+  watch: {
+    basicInfo(val) {
+      this.editBasicInfo = { ...val }
+    },
+    contact(val) {
+      this.editContact = { ...val }
+    }
+  },
   created() {
-    this.editBasicinfo = { ...this.basicInfo }
+    this.editBasicInfo = { ...this.basicInfo }
+    this.editContact = { ...this.contact }
+    console.log('contact', this.contact)
   },
   methods: {
     // 保存所有信息
     saveAll() {},
     // 重置信息
     reset() {
-      this.editBasicinfo = { ...this.basicInfo }
+      this.$dialog.confirm({
+        title: '提示',
+        message: '是否将所有信息重置为 <b>初始状态</b> 喵？若如此则将清空已保存信息。',
+        cancelText: '取消',
+        confirmText: '确定',
+        type: 'is-danger',
+        iconPack: 'fas',
+        icon: 'exclamation-circle',
+        hasIcon: true,
+        onConfirm: () => {
+          this.$emit('reset')
+          this.$toast.open('重置成功!')
+        }
+      })
     },
     //关闭编辑菜单
     handleClose() {
@@ -175,8 +176,15 @@ export default {
     },
     // 保存
     save(type) {
-      // this.status[type]
-      // this.$snackbar.open(`Default, positioned bottom-left with a green 'OK' button`)
+      let data
+      switch (type) {
+        case 'basicInfo':
+          data = this.editBasicInfo
+          break
+        case 'contact':
+          data = this.editContact
+      }
+      this.$emit('save', { type, data })
       this.$snackbar.open({
         duration: 2000,
         message: '保存成功！o(*￣▽￣*)ブ',

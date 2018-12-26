@@ -1,0 +1,63 @@
+{
+  "basicInfo": {
+    "name": {
+      "label": "姓名",
+      "icon": "user-tie"
+    },
+    "desc": {
+      "label": "格言",
+      "icon": "paper-plane"
+    },
+    "gender": {
+      "label": "性别",
+      "icon": "transgender"
+    },
+    "birthday": {
+      "label": "生日",
+      "icon": "birthday-cake"
+    },
+    "avatar": {
+      "label": "头像",
+      "icon": "user-circle"
+    },
+    "school": {
+      "label": "学校",
+      "icon": "graduation-cap"
+    },
+    "major": {
+      "label": "职业",
+      "icon": "briefcase"
+    }
+  },
+  "contact": {
+    "tel": {
+      "label": "电话",
+      "icon": "phone"
+    },
+    "email": {
+      "label": "邮箱",
+      "icon": "envelope"
+    },
+    "wechat": {
+      "label": "微信",
+      "icon": "weixin",
+      "pack": "fab"
+    },
+    "qq": {
+      "label": "QQ",
+      "icon": "qq",
+      "pack": "fab"
+    },
+    "blog": {
+      "label": "博客",
+      "icon": "rss",
+      "type": "link"
+    },
+    "github": {
+      "label": "Github",
+      "icon": "github",
+      "pack": "fab",
+      "type": "link"
+    }
+  }
+}
