@@ -24,7 +24,7 @@
         </li>
       </ul>
     </div>
-    <div class="side">
+    <div class="side" v-if="!hidden.skill">
       <h2>Skill 技能树</h2>
       <ul class="skill">
         <li v-for="(item, i) in skill" :key="i">
@@ -51,6 +51,9 @@ export default {
   },
   props: {
     map: {
+      type: Object
+    },
+    hidden: {
       type: Object
     },
     basicInfo: {

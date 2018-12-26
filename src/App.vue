@@ -12,18 +12,26 @@
     >
       <Edit
         :map="map"
+        :hidden="hidden"
         :basicInfo="basicInfo"
         :contact="contact"
         :skill="skill"
         @closeMenu="handleCloseMenu"
         @save="save"
         @reset="reset"
+        @toggleHidden="toggleHidden"
       />
     </Push>
     <div id="page-wrap" class="container">
       <div :class="['body', openMenu && 'move']">
         <div class="resume">
-          <Sidebar :map="map" :basicInfo="basicInfo" :contact="contact" :skill="skill" />
+          <Sidebar
+            :map="map"
+            :hidden="hidden"
+            :basicInfo="basicInfo"
+            :contact="contact"
+            :skill="skill"
+          />
           <article>555</article>
         </div>
         <Footer />
@@ -48,9 +56,13 @@ export default {
   },
   data() {
     const localContent = localRead('resume') ? JSON.parse(localRead('resume')) : {}
+    const setting = localRead('setting') ? JSON.parse(localRead('setting')) : {}
+    const { hidden = { skill: false } } = setting
+    console.log('hidden', hidden)
     return {
       map,
       openMenu: false,
+      hidden,
       basicInfo: localContent.basicInfo || basicInfo,
       contact: localContent.contact || contact,
       skill: localContent.skill || skill
@@ -83,6 +95,18 @@ export default {
     save({ type, data }) {
       this[type] = data
       this.saveAll()
+    },
+    // 显示/隐藏
+    toggleHidden({ type, hidden }) {
+      this.hidden[type] = hidden
+      this.saveSetting()
+    },
+    // 保存设置
+    saveSetting() {
+      const setting = {
+        hidden: this.hidden
+      }
+      localSave('setting', JSON.stringify(setting))
     }
   }
 }

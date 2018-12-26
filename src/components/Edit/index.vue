@@ -32,7 +32,7 @@
               :placeholder="`${item.label}（不填则不显示该栏）`"
               :icon-pack="item.pack"
               :icon="item.icon"
-              :disabled="!status.basicInfo.edit"
+              :disabled="!isEdit.basicInfo"
             >
             </b-input>
           </b-field>
@@ -41,10 +41,7 @@
       <footer class="card-footer">
         <a class="card-footer-item" @click="save('basicInfo')">保存</a>
         <a class="card-footer-item" @click="edit('basicInfo')">
-          {{ status.basicInfo.edit ? '取消' : '编辑' }}
-        </a>
-        <a class="card-footer-item" @click="changeStatus('basicInfo')">
-          {{ status.basicInfo.hidden ? '显示' : '隐藏' }}
+          {{ isEdit.basicInfo ? '取消' : '编辑' }}
         </a>
       </footer>
     </b-collapse>
@@ -67,7 +64,7 @@
               :placeholder="`${item.label}（不填则不显示该栏）`"
               :icon-pack="item.pack"
               :icon="item.icon"
-              :disabled="!status.contact.edit"
+              :disabled="!isEdit.contact"
             >
             </b-input>
           </b-field>
@@ -76,10 +73,7 @@
       <footer class="card-footer">
         <a class="card-footer-item" @click="save('contact')">保存</a>
         <a class="card-footer-item" @click="edit('contact')">
-          {{ status.contact.edit ? '取消' : '编辑' }}
-        </a>
-        <a class="card-footer-item" @click="changeStatus('contact')">
-          {{ status.contact.hidden ? '显示' : '隐藏' }}
+          {{ isEdit.contact ? '取消' : '编辑' }}
         </a>
       </footer>
     </b-collapse>
@@ -101,12 +95,16 @@
             v-model="item.proficiency"
             tooltip="hover"
             :width="190"
-            :disabled="!status.skill.edit"
+            :disabled="!isEdit.skill"
             :formatter="formatter"
             :processStyle="{
               backgroundImage: '-webkit-linear-gradient(left, #ff8dde, #3498db)'
             }"
-            :tooltipStyle="tooltipStyle"
+            :tooltipStyle="{
+              backgroundColor: 'rgba(200, 82, 235, 0.6)',
+              borderColor: 'rgba(200, 82, 235, 0.6)',
+              borderWidth: 0
+            }"
           ></vue-slider>
           <div class="skill-precent">{{ item.proficiency }}%</div>
         </div>
@@ -114,10 +112,10 @@
       <footer class="card-footer">
         <a class="card-footer-item" @click="save('skill')">保存</a>
         <a class="card-footer-item" @click="edit('skill')">
-          {{ status.skill.edit ? '取消' : '编辑' }}
+          {{ isEdit.skill ? '取消' : '编辑' }}
         </a>
-        <a class="card-footer-item" @click="changeStatus('skill')">
-          {{ status.skill.hidden ? '显示' : '隐藏' }}
+        <a class="card-footer-item" @click="toggleHidden('skill')">
+          {{ isHidden.skill ? '显示' : '隐藏' }}
         </a>
       </footer>
     </b-collapse>
@@ -134,6 +132,9 @@ export default {
     map: {
       type: Object
     },
+    hidden: {
+      type: Object
+    },
     basicInfo: {
       type: Object
     },
@@ -146,28 +147,17 @@ export default {
   },
   data() {
     return {
-      status: {
-        basicInfo: {
-          edit: false,
-          hidden: false
-        },
-        contact: {
-          edit: false,
-          hidden: false
-        },
-        skill: {
-          edit: false,
-          hidden: false
-        }
+      isEdit: {
+        basicInfo: false,
+        contact: false,
+        skill: false
+      },
+      isHidden: {
+        skill: false
       },
       editBasicInfo: {},
       editContact: {},
-      editSkill: [],
-      tooltipStyle: {
-        backgroundColor: 'rgba(200, 82, 235, 0.6)',
-        borderColor: 'rgba(200, 82, 235, 0.6)',
-        borderWidth: 0
-      }
+      editSkill: []
     }
   },
   computed: {
@@ -208,6 +198,7 @@ export default {
     this.editContact = { ...this.contact }
     // TODO: 技能树可以直接修改，BUG or Feature?
     this.editSkill = [...this.skill]
+    this.isHidden = { ...this.hidden }
   },
   methods: {
     // 保存所有信息
@@ -242,8 +233,10 @@ export default {
           break
         case 'contact':
           data = this.editContact
+          break
       }
       this.$emit('save', { type, data })
+      this.isEdit[type] = false
       this.$snackbar.open({
         duration: 2000,
         message: '保存成功！o(*￣▽￣*)ブ',
@@ -255,20 +248,37 @@ export default {
     },
     // 编辑
     edit(type) {
-      this.status[type].edit = !this.status[type].edit
+      this.isEdit[type] = !this.isEdit[type]
+      if (!this.isEdit[type].edit) {
+        switch (type) {
+          case 'basicInfo':
+            this.editBasicInfo = this.basicInfo
+            break
+          case 'contact':
+            this.editContact = this.contact
+            break
+          case 'skill':
+            this.editSkill = this.skill
+            break
+        }
+      }
     },
-    changeStatus(type) {
-      this.status[type].hidden = !this.status[type].hidden
+    // 显示/隐藏
+    toggleHidden(type) {
+      this.isHidden[type] = !this.isHidden[type]
+      if (type !== 'basicInfo' && type !== 'contact') {
+        this.$emit('toggleHidden', { type, hidden: this.isHidden[type] })
+      }
     },
     // 技能进度格式化
     formatter(value) {
-      let text = ''
-      if (value < 20) text = '萌新'
-      else if (value >= 20 && value < 40) text = '了解'
-      else if (value >= 40 && value < 60) text = '入门'
-      else if (value >= 60 && value < 80) text = '熟悉'
-      else if (value >= 80) text = '精通 '
-      return text
+      let tip = ''
+      if (value < 20) tip = '萌新'
+      else if (value >= 20 && value < 40) tip = '了解'
+      else if (value >= 40 && value < 60) tip = '入门'
+      else if (value >= 60 && value < 80) tip = '熟悉'
+      else if (value >= 80) tip = '精通 '
+      return tip
     }
   }
 }
