@@ -51,13 +51,13 @@
     "blog": {
       "label": "博客",
       "icon": "rss",
-      "type": "link"
+      "link": "//"
     },
     "github": {
       "label": "Github",
       "icon": "github",
       "pack": "fab",
-      "type": "link"
+      "link": "https://github.com/"
     }
   },
   "skill": {

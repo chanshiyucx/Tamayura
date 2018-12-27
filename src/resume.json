@@ -13,8 +13,8 @@
     "email": "me@chanshiyu.com",
     "wechat": "ivancx123",
     "qq": "1124590931",
-    "blog": "https://chanshiyu.com",
-    "github": "https://github.com/chanshiyucx"
+    "blog": "chanshiyu.com",
+    "github": "chanshiyucx"
   },
   "skill": [
     { "name": "JavaScript", "proficiency": 80 },

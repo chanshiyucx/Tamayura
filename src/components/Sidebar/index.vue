@@ -17,7 +17,7 @@
       <h2>Concat 联系方式</h2>
       <ul>
         <li v-for="(item, i) in getContactList" :key="i">
-          {{ item.label }}：<a v-if="item.type === 'link'" :href="item.value" target="_blank">{{
+          {{ item.label }}：<a v-if="item.link" :href="item.link" target="_blank">{{
             item.value
           }}</a>
           <span v-else>{{ item.value }}</span>
@@ -28,17 +28,31 @@
       <h2>Skills 技能树</h2>
       <ul class="skill">
         <li v-for="(item, i) in skill" :key="i">
-         
+          <span class="skill-name">{{ item.name }}</span>
+          <vue-slider
+            tooltip="false"
+            disabled
+            :value="item.proficiency"
+            :dotSize="0"
+            :width="190"
+            :processStyle="{
+              backgroundImage: '-webkit-linear-gradient(left, #f75bcb, #0595f5)',
+              borderTopRightRadius: 0,
+              borderBottomRightRadius: 0
+            }"
+          ></vue-slider>
         </li>
       </ul>
     </div>
   </div>
 </template>
 <script>
+import vueSlider from 'vue-slider-component'
 import Color from 'color'
 export default {
   name: 'Sidebar',
   components: {
+    vueSlider
   },
   props: {
     map: {
@@ -85,7 +99,9 @@ export default {
           label: link[k].label,
           icon: link[k].icon,
           pack: link[k].pack || 'fas',
-          type: link[k].type || 'text',
+          link: link[k].link
+            ? `${this.contact[k].includes('http') ? '' : link[k].link}${this.contact[k]}`
+            : '',
           value: this.contact[k]
         }))
     }
