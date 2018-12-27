@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Menu v-bind="this.$attrs" @openMenu="push" @closeMenu="pull" @handleReady="handleReady">
+    <Menu v-bind="this.$attrs" @openMenu="push" @closeMenu="pull" @readyGetPdf="readyGetPdf">
       <slot></slot>
     </Menu>
   </div>
@@ -20,6 +20,9 @@ export default {
     closeMenu() {
       this.$emit('closeMenu')
     },
+    readyGetPdf() {
+      this.$emit('readyGetPdf')
+    },
     push() {
       this.openMenu()
       let width = this.$attrs.width ? this.$attrs.width + 'px' : '300px'
@@ -36,9 +39,6 @@ export default {
       document.querySelector('#page-wrap').style.transition = 'all 0.5s ease 0s'
       document.querySelector('#page-wrap').style.transform = ''
       document.body.removeAttribute('style')
-    },
-    handleReady() {
-      this.$emit('handleReady')
     }
   }
 }

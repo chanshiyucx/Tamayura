@@ -171,6 +171,7 @@
 import vueSlider from 'vue-slider-component'
 import { Sketch } from 'vue-color'
 import Color from 'color'
+import { deepCopy } from '../../utils/tool'
 export default {
   name: 'Edit',
   components: {
@@ -210,7 +211,7 @@ export default {
         contact: false,
         skill: false
       },
-      colorType: '',
+      colorType: 'sidebar',
       pickColor: {
         hex: '#8d9cd2',
         hsl: { h: 227, s: 0.43, l: 0.69, a: 1 },
@@ -246,11 +247,12 @@ export default {
   },
   watch: {
     pickColor(val) {
+      if (!this.colorType) return
       let color = val.rgba
       let alpha = color.a
       delete color.a
       color.alpha = alpha
-      const newColor = Color(color)
+      const newColor = Color(color).string()
       this.$emit('setColor', { type: this.colorType, color: newColor })
     }
   },
@@ -261,7 +263,7 @@ export default {
   methods: {
     // 保存快照
     takeSnapShot(type) {
-      this.snapshot[type] = JSON.parse(JSON.stringify(this[type]))
+      this.snapshot[type] = deepCopy(this[type])
     },
     // 关闭编辑菜单
     handleClose() {
@@ -363,12 +365,10 @@ export default {
     // 当前取色类型
     setColorType(type) {
       this.colorType = type
-      console.log('this.colorType', this.colorType)
     },
     // 获取深色
     getDarken(color) {
-      console.log('backgroundColor', color)
-      return Color(color).darken(0.5)
+      return Color(color).darken(0.2)
     },
     // 取色框yanse
     getStyle(type) {
@@ -386,7 +386,6 @@ export default {
       }
       if (type === this.colorType) {
         style.boxShadow = `0 0 0 3px ${this.getDarken(style.backgroundColor)}`
-        console.log('getStyle', type, this.colorType, style)
       }
       return style
     }

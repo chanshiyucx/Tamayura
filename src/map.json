@@ -61,6 +61,9 @@
     }
   },
   "setting": {
+    "hidden": {
+      "skill": false
+    },
     "color": {
       "sidebar": "#8d9cd2",
       "skill": {

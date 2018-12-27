@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar" :style="{ backgroundColor: color.sidebar }">
     <div class="avatar-wrap">
-      <img :src="basicInfo.avatar" alt="" />
+      <img :src="basicInfo.avatar" alt="" crossOrigin="Anonymous" />
       <h1>{{ basicInfo.name }}</h1>
       <p>{{ basicInfo.desc }}</p>
     </div>
@@ -103,7 +103,6 @@ export default {
     processStyle() {
       console.log('this.color', this.color)
       const { from, to } = this.color.skill
-
       return {
         backgroundImage: `-webkit-linear-gradient(left, ${from}, ${to})`,
         borderTopRightRadius: 0,

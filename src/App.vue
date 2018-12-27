@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <a
-      v-if="!isReady"
       href="https://github.com/chanshiyucx/Tamayura"
       target="_blank"
       class="github-corner"
@@ -29,12 +28,11 @@
       </svg>
     </a>
     <Push
-      v-if="!isReady"
       :isOpen="openMenu"
       :crossIcon="false"
       @openMenu="handleOpenMenu"
       @closeMenu="handleCloseMenu"
-      @handleReady="handleReady"
+      @readyGetPdf="readyGetPdf"
       noOverlay
       pageWrapId="page-wrap"
       outerContainerId="app"
@@ -56,9 +54,9 @@
         @setColor="setColor"
       />
     </Push>
-    <div id="page-wrap" :class="['container', !isReady && 'show']">
+    <div id="page-wrap" class="container">
       <div :class="['body', openMenu && 'move']">
-        <div class="resume">
+        <div id="pdfDom" class="resume">
           <Sidebar
             :map="map"
             :hidden="hidden"
@@ -69,13 +67,13 @@
           />
           <article>555</article>
         </div>
-        <Footer v-if="!isReady" />
+        <Footer />
       </div>
     </div>
   </div>
 </template>
 <script>
-import { localSave, localRead, on, off, deepCopy } from './tool'
+import { localSave, localRead, deepCopy } from './utils/tool'
 import { Sidebar, Footer, Edit, Push } from './components'
 import content from './resume.json'
 import map from './map.json'
@@ -83,9 +81,7 @@ import map from './map.json'
 const { basicInfo, contact, skill } = content
 const localContent = localRead('resume') ? JSON.parse(localRead('resume')) : {}
 const setting = localRead('setting') ? JSON.parse(localRead('setting')) : {}
-const { hidden = { skill: false }, color } = setting
-
-console.log('color', color)
+const { hidden, color } = setting
 
 export default {
   name: 'app',
@@ -97,29 +93,20 @@ export default {
   },
   data() {
     return {
-      isReady: false,
       map,
       openMenu: false,
-      hidden,
+      hidden: hidden || map.setting.hidden,
       color: color || map.setting.color,
       basicInfo: localContent.basicInfo || basicInfo,
       contact: localContent.contact || contact,
       skill: localContent.skill || skill
     }
   },
-  created() {
-    on(window, 'keydown', this.keydown)
-  },
-  beforeDestroy() {
-    off(window, 'keydown', this.keydown)
-  },
   methods: {
-    // 监听ESC
-    keydown(e) {
-      if (e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27) {
-        e.preventDefault()
-        this.isReady = false
-      }
+    // 下载 PDF
+    readyGetPdf() {
+      const title = `${this.basicInfo.name || '百分百'}の简历`
+      this.getPdf(title)
     },
     // 打开菜单
     handleOpenMenu() {
@@ -129,31 +116,12 @@ export default {
     handleCloseMenu() {
       this.openMenu = false
     },
-    // 准备打印
-    handleReady() {
-      if (!this.isReady) {
-        this.$dialog.confirm({
-          title: '提示',
-          message:
-            "右键页面，选择打印，在<b>更多设置</b>里设置<b>页面边距为无</b>，勾选<b>背景图案</b>，即可保存或打印。<br /><b style='color: red'>按【ESC】键可返回编辑</b>",
-          cancelText: '取消',
-          confirmText: '确定',
-          type: 'is-primary',
-          iconPack: 'fas',
-          icon: 'exclamation-circle',
-          hasIcon: true,
-          onConfirm: () => {
-            this.isReady = true
-          }
-        })
-      }
-    },
     // 重置
     reset() {
       this.basicInfo = basicInfo
       this.contact = contact
       this.skill = skill
-      // this.hidden = hidden
+      this.hidden = deepCopy(map.setting.hidden)
       this.color = deepCopy(map.setting.color)
       this.saveAll()
     },
@@ -196,6 +164,7 @@ export default {
         hidden: this.hidden,
         color: this.color
       }
+      console.log('this.color', this.color)
       localSave('setting', JSON.stringify(setting))
     }
   }

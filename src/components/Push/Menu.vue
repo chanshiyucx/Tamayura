@@ -24,7 +24,7 @@
       </a>
     </div>
 
-    <div class="bm-burger-ready" @click="handleReady">
+    <div class="bm-burger-ready" @click="readyGetPdf">
       <a class="button is-info is-focused is-rounded is-success">
         <span class="icon is-small"><i class="fas fa-download"></i> </span> <span>打印</span>
       </a>
@@ -106,8 +106,8 @@ export default {
         this.isSideBarOpen = false
       }
     },
-    handleReady() {
-      this.$emit('handleReady')
+    readyGetPdf() {
+      this.$emit('readyGetPdf')
     }
   },
   mounted() {
