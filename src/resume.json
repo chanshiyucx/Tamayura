@@ -20,6 +20,7 @@
     { "name": "JavaScript", "proficiency": 80 },
     { "name": "Nodejs", "proficiency": 60 },
     { "name": "CSS3", "proficiency": 70 },
-    { "name": "React", "proficiency": 77 }
+    { "name": "React", "proficiency": 77 },
+    { "name": "Vue", "proficiency": 72 }
   ]
 }

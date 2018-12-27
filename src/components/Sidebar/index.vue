@@ -25,29 +25,20 @@
       </ul>
     </div>
     <div class="side" v-if="!hidden.skill">
-      <h2>Skill 技能树</h2>
+      <h2>Skills 技能树</h2>
       <ul class="skill">
         <li v-for="(item, i) in skill" :key="i">
-          <ProgressBar
-            :startColor="map.skill[item.name].color"
-            :stopColor="map.skill[item.name].color"
-            innerStrokeColor="#bee3f7"
-            :completed-steps="item.proficiency"
-          >
-            <p>{{ item.name }}</p>
-            <p>{{ item.proficiency }}%</p>
-          </ProgressBar>
+         
         </li>
       </ul>
     </div>
   </div>
 </template>
 <script>
-import ProgressBar from '../ProgressBar'
+import Color from 'color'
 export default {
   name: 'Sidebar',
   components: {
-    ProgressBar
   },
   props: {
     map: {

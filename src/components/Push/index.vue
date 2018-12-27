@@ -1,6 +1,8 @@
 <template>
   <div>
-    <Menu v-bind="this.$attrs" @openMenu="push" @closeMenu="pull"> <slot></slot> </Menu>
+    <Menu v-bind="this.$attrs" @openMenu="push" @closeMenu="pull" @handleReady="handleReady">
+      <slot></slot>
+    </Menu>
   </div>
 </template>
 
@@ -34,6 +36,10 @@ export default {
       document.querySelector('#page-wrap').style.transition = 'all 0.5s ease 0s'
       document.querySelector('#page-wrap').style.transform = ''
       document.body.removeAttribute('style')
+    },
+    handleReady() {
+      console.log('222handleReady')
+      this.$emit('handleReady')
     }
   }
 }

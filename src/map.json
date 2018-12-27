@@ -72,6 +72,9 @@
     },
     "React": {
       "color": "#d43a43"
+    },
+    "Vue": {
+      "color": "#41b883"
     }
   },
   "setting": {

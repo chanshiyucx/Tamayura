@@ -19,8 +19,14 @@
     </div>
 
     <div class="bm-burger-button" @click="openMenu" :class="{ hidden: !burgerIcon }">
-      <a class="button is-info is-focused is-rounded">
+      <a class="button is-primary is-focused is-rounded">
         <span class="icon is-small"><i class="fas fa-user-edit"></i> </span> <span>编辑</span>
+      </a>
+    </div>
+
+    <div class="bm-burger-ready" @click="handleReady">
+      <a class="button is-info is-focused is-rounded is-success">
+        <span class="icon is-small"><i class="fas fa-download"></i> </span> <span>打印</span>
       </a>
     </div>
   </div>
@@ -99,6 +105,9 @@ export default {
         document.body.style.backgroundColor = 'inherit'
         this.isSideBarOpen = false
       }
+    },
+    handleReady() {
+      this.$emit('handleReady')
     }
   },
   mounted() {

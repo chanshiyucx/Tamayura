@@ -152,7 +152,6 @@
 import vueSlider from 'vue-slider-component'
 import { Sketch } from 'vue-color'
 import Color from 'color'
-
 export default {
   name: 'Edit',
   components: {
@@ -232,10 +231,7 @@ export default {
       let alpha = color.a
       delete color.a
       color.alpha = alpha
-
       const newColor = Color(color)
-      // .lighten(0.6)
-      // .fade(0.5)
       this.$emit('setColor', { type: this.colorType, color: newColor })
     }
   },
