@@ -48,7 +48,6 @@
 </template>
 <script>
 import vueSlider from 'vue-slider-component'
-import Color from 'color'
 export default {
   name: 'Sidebar',
   components: {

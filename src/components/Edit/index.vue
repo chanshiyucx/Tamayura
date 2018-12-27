@@ -135,6 +135,7 @@
           ></vue-slider>
           <div class="skill-precent">{{ item.proficiency }}%</div>
         </div>
+        <div class="add-btn">添加</div>
       </div>
       <footer class="card-footer">
         <a class="card-footer-item" @click="save('skill')">保存</a>
