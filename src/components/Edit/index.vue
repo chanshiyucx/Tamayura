@@ -24,15 +24,33 @@
           </b-icon>
         </a>
       </div>
-      <div class="card-content">
+      <div class="card-content setting">
         <ul>
-          <li class="setting-item">
+          <li>
             <span>背景色：</span>
-            <span class="color-box" :style="{ backgroundColor: color.sidebar }"></span>
+            <span
+              class="color-box"
+              :style="getStyle('sidebar')"
+              @click="setColorType('sidebar')"
+            ></span>
+          </li>
+          <li>
+            <span>技能树：</span>
+            <span
+              class="color-box"
+              :style="getStyle('skill-from')"
+              @click="setColorType('skill-from')"
+            ></span>
+            <i class="line" />
+            <span
+              class="color-box"
+              :style="getStyle('skill-to')"
+              @click="setColorType('skill-to')"
+            ></span>
           </li>
         </ul>
 
-        <Sketch v-model="pickColor" />
+        <Sketch class="sketch" v-model="pickColor" />
       </div>
       <footer class="card-footer">
         <a class="card-footer-item" @click="saveSetting">保存</a>
@@ -192,7 +210,7 @@ export default {
         contact: false,
         skill: false
       },
-      colorType: 'sidebar',
+      colorType: '',
       pickColor: {
         hex: '#8d9cd2',
         hsl: { h: 227, s: 0.43, l: 0.69, a: 1 },
@@ -341,6 +359,36 @@ export default {
         hasIcon: true,
         onConfirm: callback
       })
+    },
+    // 当前取色类型
+    setColorType(type) {
+      this.colorType = type
+      console.log('this.colorType', this.colorType)
+    },
+    // 获取深色
+    getDarken(color) {
+      console.log('backgroundColor', color)
+      return Color(color).darken(0.5)
+    },
+    // 取色框yanse
+    getStyle(type) {
+      let style
+      switch (type) {
+        case 'sidebar':
+          style = { backgroundColor: this.color.sidebar }
+          break
+        case 'skill-from':
+          style = { backgroundColor: this.color.skill.from }
+          break
+        case 'skill-to':
+          style = { backgroundColor: this.color.skill.to }
+          break
+      }
+      if (type === this.colorType) {
+        style.boxShadow = `0 0 0 3px ${this.getDarken(style.backgroundColor)}`
+        console.log('getStyle', type, this.colorType, style)
+      }
+      return style
     }
   }
 }

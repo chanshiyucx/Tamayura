@@ -75,7 +75,7 @@
   </div>
 </template>
 <script>
-import { localSave, localRead } from './tool'
+import { localSave, localRead, on, off, deepCopy } from './tool'
 import { Sidebar, Footer, Edit, Push } from './components'
 import content from './resume.json'
 import map from './map.json'
@@ -84,6 +84,8 @@ const { basicInfo, contact, skill } = content
 const localContent = localRead('resume') ? JSON.parse(localRead('resume')) : {}
 const setting = localRead('setting') ? JSON.parse(localRead('setting')) : {}
 const { hidden = { skill: false }, color } = setting
+
+console.log('color', color)
 
 export default {
   name: 'app',
@@ -105,7 +107,20 @@ export default {
       skill: localContent.skill || skill
     }
   },
+  created() {
+    on(window, 'keydown', this.keydown)
+  },
+  beforeDestroy() {
+    off(window, 'keydown', this.keydown)
+  },
   methods: {
+    // 监听ESC
+    keydown(e) {
+      if (e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27) {
+        e.preventDefault()
+        this.isReady = false
+      }
+    },
     // 打开菜单
     handleOpenMenu() {
       this.openMenu = true
@@ -120,7 +135,7 @@ export default {
         this.$dialog.confirm({
           title: '提示',
           message:
-            '右键页面，选择打印，在<b>更多设置</b>里设置<b>页面边距为无</b>，勾选<b>背景图案</b>，即可保存或打印。',
+            "右键页面，选择打印，在<b>更多设置</b>里设置<b>页面边距为无</b>，勾选<b>背景图案</b>，即可保存或打印。<br /><b style='color: red'>按【ESC】键可返回编辑</b>",
           cancelText: '取消',
           confirmText: '确定',
           type: 'is-primary',
@@ -138,6 +153,8 @@ export default {
       this.basicInfo = basicInfo
       this.contact = contact
       this.skill = skill
+      // this.hidden = hidden
+      this.color = deepCopy(map.setting.color)
       this.saveAll()
     },
     // 保存所有
@@ -152,12 +169,17 @@ export default {
     },
     //还原
     back() {
-      this.color = { ...map.setting.color }
+      this.color = deepCopy(map.setting.color)
       this.saveSetting()
     },
     // 设置颜色
     setColor({ type, color }) {
-      this.color[type] = color
+      if (type.includes('-')) {
+        const typeArr = type.split('-')
+        this.color[typeArr[0]][typeArr[1]] = color
+      } else {
+        this.color[type] = color
+      }
     },
     // 保存个人信息
     saveResume() {

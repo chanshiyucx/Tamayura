@@ -60,26 +60,13 @@
       "link": "https://github.com/"
     }
   },
-  "skill": {
-    "JavaScript": {
-      "color": "#45aeea"
-    },
-    "Nodejs": {
-      "color": "#d2d558"
-    },
-    "CSS3": {
-      "color": "#efb918"
-    },
-    "React": {
-      "color": "#d43a43"
-    },
-    "Vue": {
-      "color": "#41b883"
-    }
-  },
   "setting": {
     "color": {
-      "sidebar": "#8d9cd2"
+      "sidebar": "#8d9cd2",
+      "skill": {
+        "from": "#f75bcb",
+        "to": "#0595f5"
+      }
     }
   }
 }

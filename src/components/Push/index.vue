@@ -38,7 +38,6 @@ export default {
       document.body.removeAttribute('style')
     },
     handleReady() {
-      console.log('222handleReady')
       this.$emit('handleReady')
     }
   }

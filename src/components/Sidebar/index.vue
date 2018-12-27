@@ -35,11 +35,7 @@
             :value="item.proficiency"
             :dotSize="0"
             :width="190"
-            :processStyle="{
-              backgroundImage: '-webkit-linear-gradient(left, #f75bcb, #0595f5)',
-              borderTopRightRadius: 0,
-              borderBottomRightRadius: 0
-            }"
+            :processStyle="processStyle"
           ></vue-slider>
         </li>
       </ul>
@@ -103,6 +99,16 @@ export default {
             : '',
           value: this.contact[k]
         }))
+    },
+    processStyle() {
+      console.log('this.color', this.color)
+      const { from, to } = this.color.skill
+
+      return {
+        backgroundImage: `-webkit-linear-gradient(left, ${from}, ${to})`,
+        borderTopRightRadius: 0,
+        borderBottomRightRadius: 0
+      }
     }
   }
 }
