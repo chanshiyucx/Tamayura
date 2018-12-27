@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   padding: 16px;
+  font-size: 18px;
   width: 400px;
   font-family: monospace, Helvetica, Arial, sans-serif;
   .btn-group {
@@ -31,7 +32,7 @@
       }
     }
     .icon {
-      margin-right: 6px;
+      margin-right: 8px;
       color: #666;
     }
   }
@@ -44,7 +45,6 @@
       align-items: center;
       width: 50%;
       height: 30px;
-      font-size: 18px;
       .color-box {
         display: inline-block;
         width: 20px;
@@ -69,16 +69,24 @@
     align-items: center;
     .skill-name {
       width: 100px;
-      font-size: 18px;
+      height: 28px;
+      overflow: hidden;
     }
     .skill-precent {
       width: 50px;
     }
+    i {
+      color: #ff3860 !important;
+    }
   }
-  .add-btn {
-    width: 86px;
-    height: 36px;
-    background: transparent;
-    border: 1px dashed #ddd;
+  .add-box {
+    padding-top: 10px;
+    text-align: center;
+    a {
+      width: 80px;
+    }
+  }
+  .about-input {
+    margin: 16px 12px 0;
   }
 }

@@ -40,6 +40,10 @@
         </li>
       </ul>
     </div>
+    <div class="side" v-if="!hidden.about">
+      <h2>About 关于我</h2>
+      <div>{{ about }}</div>
+    </div>
   </div>
 </template>
 <script>
@@ -67,6 +71,9 @@ export default {
     },
     skill: {
       type: Array
+    },
+    about: {
+      type: String
     }
   },
   data() {
@@ -101,7 +108,6 @@ export default {
         }))
     },
     processStyle() {
-      console.log('this.color', this.color)
       const { from, to } = this.color.skill
       return {
         backgroundImage: `-webkit-linear-gradient(left, ${from}, ${to})`,

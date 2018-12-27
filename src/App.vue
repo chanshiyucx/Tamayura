@@ -45,6 +45,7 @@
         :basicInfo="basicInfo"
         :contact="contact"
         :skill="skill"
+        :about="about"
         @handleCloseMenu="handleCloseMenu"
         @reset="reset"
         @saveAll="saveAll"
@@ -64,6 +65,7 @@
             :basicInfo="basicInfo"
             :contact="contact"
             :skill="skill"
+            :about="about"
           />
           <article>555</article>
         </div>
@@ -78,9 +80,11 @@ import { Sidebar, Footer, Edit, Push } from './components'
 import content from './resume.json'
 import map from './map.json'
 
-const { basicInfo, contact, skill } = content
-const localContent = localRead('resume') ? JSON.parse(localRead('resume')) : {}
-const setting = localRead('setting') ? JSON.parse(localRead('setting')) : {}
+// 个人信息
+const localContent = localRead('resume') ? JSON.parse(localRead('resume')) : deepCopy(content)
+const { basicInfo, contact, skill, about } = localContent
+// 基本配置
+const setting = localRead('setting') ? JSON.parse(localRead('setting')) : deepCopy(map.setting)
 const { hidden, color } = setting
 
 export default {
@@ -95,11 +99,12 @@ export default {
     return {
       map,
       openMenu: false,
-      hidden: hidden || map.setting.hidden,
-      color: color || map.setting.color,
-      basicInfo: localContent.basicInfo || basicInfo,
-      contact: localContent.contact || contact,
-      skill: localContent.skill || skill
+      hidden,
+      color,
+      basicInfo,
+      contact,
+      skill,
+      about
     }
   },
   methods: {
@@ -118,11 +123,10 @@ export default {
     },
     // 重置
     reset() {
-      this.basicInfo = basicInfo
-      this.contact = contact
-      this.skill = skill
-      this.hidden = deepCopy(map.setting.hidden)
-      this.color = deepCopy(map.setting.color)
+      const copyContent = deepCopy(content)
+      const copySetting = deepCopy(map.setting)
+      Object.keys(copyContent).forEach(k => (this[k] = copyContent[k]))
+      Object.keys(copySetting).forEach(k => (this[k] = copySetting[k]))
       this.saveAll()
     },
     // 保存所有
@@ -135,7 +139,7 @@ export default {
       this[type] = data || this[type]
       this.saveResume()
     },
-    //还原
+    // 还原
     back() {
       this.color = deepCopy(map.setting.color)
       this.saveSetting()
@@ -151,10 +155,15 @@ export default {
     },
     // 保存个人信息
     saveResume() {
+      // 删除无用冗余信息
+      this.skill = this.skill.filter(o => o.name)
+      this.skill.forEach(o => delete o.isEdit)
+
       const resume = {
         basicInfo: this.basicInfo,
         contact: this.contact,
-        skill: this.skill
+        skill: this.skill,
+        about: this.about
       }
       localSave('resume', JSON.stringify(resume))
     },
@@ -164,7 +173,6 @@ export default {
         hidden: this.hidden,
         color: this.color
       }
-      console.log('this.color', this.color)
       localSave('setting', JSON.stringify(setting))
     }
   }

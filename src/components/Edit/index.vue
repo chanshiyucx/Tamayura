@@ -17,7 +17,7 @@
     <b-collapse class="card" :open.sync="isOpen.theme">
       <div class="card-header" slot="trigger">
         <p class="card-header-title">
-          <b-icon pack="fas" icon="palette" size="is-small"> </b-icon>主题设置
+          <b-icon pack="fas" icon="palette" size="is-small"> </b-icon> 主题设置
         </p>
         <a class="card-header-icon">
           <b-icon pack="fas" :icon="isOpen.theme ? 'angle-down' : 'angle-up'" size="is-small">
@@ -61,7 +61,7 @@
     <b-collapse class="card" :open.sync="isOpen.basicInfo">
       <div class="card-header" slot="trigger">
         <p class="card-header-title">
-          <b-icon pack="fas" icon="user" size="is-small"> </b-icon>基本信息
+          <b-icon pack="fa" icon="address-card" size="is-small"> </b-icon> 基本信息
         </p>
         <a class="card-header-icon">
           <b-icon pack="fas" :icon="isOpen.basicInfo ? 'angle-down' : 'angle-up'" size="is-small">
@@ -93,7 +93,7 @@
     <b-collapse class="card" :open.sync="isOpen.contact">
       <div class="card-header" slot="trigger">
         <p class="card-header-title">
-          <b-icon pack="fas" icon="mobile-alt" size="is-small"> </b-icon>联系方式
+          <b-icon pack="fas" icon="mobile-alt" size="is-small"> </b-icon> 联系方式
         </p>
         <a class="card-header-icon">
           <b-icon pack="fas" :icon="isOpen.contact ? 'angle-down' : 'angle-up'" size="is-small">
@@ -125,7 +125,7 @@
     <b-collapse class="card" :open.sync="isOpen.skill">
       <div class="card-header" slot="trigger">
         <p class="card-header-title">
-          <b-icon pack="fab" icon="empire" size="is-small"> </b-icon>技能树
+          <b-icon pack="fab" icon="empire" size="is-small"> </b-icon> 技能树
         </p>
         <a class="card-header-icon">
           <b-icon pack="fas" :icon="isOpen.skill ? 'angle-down' : 'angle-up'" size="is-small">
@@ -134,7 +134,15 @@
       </div>
       <div class="card-content">
         <div class="skill-item" v-for="(item, i) in skill" :key="i">
-          <div class="skill-name">{{ item.name }}</div>
+          <div v-if="item.isEdit" class="skill-name">
+            <b-input
+              v-model="item.name"
+              size="is-small"
+              placeholder="You Skill"
+              type="email"
+            ></b-input>
+          </div>
+          <div v-else class="skill-name">{{ item.name }}</div>
           <vue-slider
             v-if="isOpen.skill"
             v-model="item.proficiency"
@@ -152,8 +160,13 @@
             }"
           ></vue-slider>
           <div class="skill-precent">{{ item.proficiency }}%</div>
+          <span v-if="isEdit.skill" @click="removeSkill(i)">
+            <i class="fas fa-times-circle"></i>
+          </span>
         </div>
-        <div class="add-btn">添加</div>
+        <div v-if="isEdit.skill" class="add-box">
+          <a class="button is-primary is-outlined" @click="addSkill">添加</a>
+        </div>
       </div>
       <footer class="card-footer">
         <a class="card-footer-item" @click="save('skill')">保存</a>
@@ -162,6 +175,38 @@
         </a>
         <a class="card-footer-item" @click="toggleHidden('skill')">
           {{ hidden.skill ? '显示' : '隐藏' }}
+        </a>
+      </footer>
+    </b-collapse>
+    <!-- 关于我 About -->
+    <b-collapse class="card" :open.sync="isOpen.about">
+      <div class="card-header" slot="trigger">
+        <p class="card-header-title">
+          <b-icon pack="fa" icon="smile-wink" size="is-small"> </b-icon> 关于我
+        </p>
+        <a class="card-header-icon">
+          <b-icon pack="fas" :icon="isOpen.about ? 'angle-down' : 'angle-up'" size="is-small">
+          </b-icon>
+        </a>
+      </div>
+      <b-input
+        class="about-input"
+        v-if="isEdit.about"
+        v-model="about"
+        type="textarea"
+        minlength="10"
+        maxlength="140"
+        placeholder="想了解你更多..."
+      >
+      </b-input>
+      <div v-else class="card-content">{{ about }}</div>
+      <footer class="card-footer">
+        <a class="card-footer-item" @click="save('about')">保存</a>
+        <a class="card-footer-item" @click="edit('about')">
+          {{ isEdit.about ? '取消' : '编辑' }}
+        </a>
+        <a class="card-footer-item" @click="toggleHidden('about')">
+          {{ hidden.about ? '显示' : '隐藏' }}
         </a>
       </footer>
     </b-collapse>
@@ -196,6 +241,9 @@ export default {
     },
     skill: {
       type: Array
+    },
+    about: {
+      type: String
     }
   },
   data() {
@@ -203,13 +251,15 @@ export default {
       isEdit: {
         basicInfo: false,
         contact: false,
-        skill: false
+        skill: false,
+        about: false
       },
       isOpen: {
         theme: false,
         basicInfo: false,
         contact: false,
-        skill: false
+        skill: false,
+        about: false
       },
       colorType: 'sidebar',
       pickColor: {
@@ -326,6 +376,18 @@ export default {
       if (type !== 'basicInfo' && type !== 'contact') {
         this.$emit('saveSetting')
       }
+    },
+    // 移除技能
+    removeSkill(i) {
+      this.skill.splice(i, 1)
+    },
+    // 添加技能
+    addSkill() {
+      this.skill.push({
+        name: '卖萌技',
+        proficiency: 60,
+        isEdit: true
+      })
     },
     // 技能进度格式化
     formatter(value) {
