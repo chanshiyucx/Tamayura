@@ -31,5 +31,18 @@
       "time": "2012/9-2016/6",
       "course": ["通信原理", "C语言基础", "TCP/IP", "局域网与广域网"]
     }
+  ],
+  "project": [
+    {
+      "name": "HeartBeat",
+      "description": "A awesome spa blog theme",
+      "sourceCode": "https://github.com/chanshiyucx/HeartBeat",
+      "demo": "https://chanshiyu.com/",
+      "content": "HeartBeat 是一个基于 UmiJS 开发的 SPA 单页面博客应用程序，后台数据源依托于 Github Issues ，使用开源项目 Gitalk 作为博客评论系统。",
+      "previewImage": [
+        "https://i.loli.net/2018/12/28/5c25c924979bf.png",
+        "https://i.loli.net/2018/12/28/5c25c924979bf.png"
+      ]
+    }
   ]
 }

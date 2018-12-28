@@ -160,12 +160,12 @@
             }"
           ></vue-slider>
           <div class="skill-precent">{{ item.proficiency }}%</div>
-          <span v-if="isEdit.skill" @click="removeSkill(i)">
+          <span v-if="isEdit.skill" @click="removeItem('skill', i)">
             <i class="fas fa-times-circle"></i>
           </span>
         </div>
         <div v-if="isEdit.skill" class="add-box">
-          <a class="button is-primary is-outlined" @click="addSkill">添加</a>
+          <a class="button is-primary is-outlined" @click="addItem('skill')">添加</a>
         </div>
       </div>
       <footer class="card-footer">
@@ -189,17 +189,17 @@
           </b-icon>
         </a>
       </div>
-      <b-input
-        class="about-input"
-        v-if="isEdit.about"
-        v-model="editAbout"
-        type="textarea"
-        minlength="10"
-        maxlength="140"
-        placeholder="想了解你更多..."
-      >
-      </b-input>
-      <div v-else class="card-content">{{ about }}</div>
+      <div class="card-content">
+        <b-input
+          v-model="editAbout"
+          :disabled="!isEdit.about"
+          type="textarea"
+          minlength="10"
+          maxlength="140"
+          placeholder="想了解你更多..."
+        >
+        </b-input>
+      </div>
       <footer class="card-footer">
         <a class="card-footer-item" @click="save('about')">保存</a>
         <a class="card-footer-item" @click="edit('about')">
@@ -225,12 +225,12 @@
         <div
           v-for="(item, i) in education"
           :key="i"
-          :class="i !== education.length - 1 && 'edu-item'"
+          :class="i !== education.length - 1 && 'field-box'"
         >
           <a
             class="button is-small is-danger is-focused is-rounded remove"
             v-if="isEdit.education && i > 0"
-            @click="removeEducation(i)"
+            @click="removeItem('education', i)"
           >
             <span class="icon is-small"> <i class="fas fa-times"></i> </span>
           </a>
@@ -277,7 +277,7 @@
           </b-field>
         </div>
         <div v-if="isEdit.education" class="add-box">
-          <a class="button is-primary is-outlined" @click="addEducation">添加</a>
+          <a class="button is-primary is-outlined" @click="addItem('education')">添加</a>
         </div>
       </div>
       <footer class="card-footer">
@@ -287,6 +287,90 @@
         </a>
         <a class="card-footer-item" @click="toggleHidden('education')">
           {{ hidden.education ? '显示' : '隐藏' }}
+        </a>
+      </footer>
+    </b-collapse>
+    <!-- 个人项目 Project -->
+    <b-collapse class="card" :open.sync="isOpen.project">
+      <div class="card-header" slot="trigger">
+        <p class="card-header-title">
+          <b-icon pack="fas" icon="laptop-code" size="is-small"> </b-icon> 个人项目
+        </p>
+        <a class="card-header-icon">
+          <b-icon pack="fas" :icon="isOpen.project ? 'angle-down' : 'angle-up'" size="is-small">
+          </b-icon>
+        </a>
+      </div>
+      <div class="card-content project">
+        <div v-for="(item, i) in project" :key="i" :class="i !== project.length - 1 && 'field-box'">
+          <a
+            class="button is-small is-danger is-focused is-rounded remove"
+            v-if="isEdit.project && i > 0"
+            @click="removeItem('project', i)"
+          >
+            <span class="icon is-small"> <i class="fas fa-times"></i> </span>
+          </a>
+          <b-field>
+            <b-input
+              v-model="item.name"
+              :disabled="!isEdit.project"
+              placeholder="请填写项目名称"
+              icon-pack="fas"
+              icon="code"
+            >
+            </b-input>
+          </b-field>
+          <b-field>
+            <b-input
+              v-model="item.description"
+              :disabled="!isEdit.project"
+              placeholder="请填写项目简介"
+              icon-pack="fas"
+              icon="bookmark"
+            >
+            </b-input>
+          </b-field>
+          <b-field>
+            <b-input
+              v-model="item.sourceCode"
+              :disabled="!isEdit.project"
+              placeholder="请填写项目源码地址【如果有的话】"
+              icon-pack="fas"
+              icon="code-branch"
+            >
+            </b-input>
+          </b-field>
+          <b-field>
+            <b-input
+              v-model="item.demo"
+              :disabled="!isEdit.project"
+              placeholder="请填写在线预览地址【如果有的话】"
+              icon-pack="fab"
+              icon="codepen"
+            >
+            </b-input>
+          </b-field>
+          <b-input
+            :disabled="!isEdit.project"
+            v-model="item.content"
+            type="textarea"
+            minlength="10"
+            maxlength="140"
+            placeholder="项目详细介绍..."
+          >
+          </b-input>
+        </div>
+        <div v-if="isEdit.project" class="add-box">
+          <a class="button is-primary is-outlined" @click="addItem('project')">添加</a>
+        </div>
+      </div>
+      <footer class="card-footer">
+        <a class="card-footer-item" @click="save('project')">保存</a>
+        <a class="card-footer-item" @click="edit('project')">
+          {{ isEdit.project ? '取消' : '编辑' }}
+        </a>
+        <a class="card-footer-item" @click="toggleHidden('project')">
+          {{ hidden.project ? '显示' : '隐藏' }}
         </a>
       </footer>
     </b-collapse>
@@ -327,6 +411,9 @@ export default {
     },
     education: {
       type: Array
+    },
+    project: {
+      type: Array
     }
   },
   data() {
@@ -336,7 +423,8 @@ export default {
         contact: false,
         skill: false,
         about: false,
-        education: false
+        education: false,
+        project: false
       },
       isOpen: {
         theme: false,
@@ -344,7 +432,8 @@ export default {
         contact: false,
         skill: false,
         about: false,
-        education: false
+        education: false,
+        project: false
       },
       colorType: 'sidebar',
       pickColor: {
@@ -396,7 +485,7 @@ export default {
     }
   },
   created() {
-    const props = ['basicInfo', 'contact', 'skill', 'about', 'education']
+    const props = ['basicInfo', 'contact', 'skill', 'about', 'education', 'project']
     props.forEach(k => this.takeSnapShot(k))
     this.editAbout = this.about
   },
@@ -470,31 +559,38 @@ export default {
         this.$emit('saveSetting')
       }
     },
-    // 移除技能
-    removeSkill(i) {
-      this.skill.splice(i, 1)
+    // 移除项目
+    removeItem(type, i) {
+      this[type].splice(i, 1)
     },
-    // 添加技能
-    addSkill() {
-      this.skill.push({
-        name: '卖萌技',
-        proficiency: 60,
-        isEdit: true
-      })
+    // 添加项目
+    addItem(type) {
+      let template
+      switch (type) {
+        case 'skill':
+          template = {
+            name: '卖萌技',
+            proficiency: 60,
+            isEdit: true
+          }
+          break
+        case 'education':
+          template = {
+            school: '',
+            major: '',
+            time: '',
+            course: []
+          }
+          break
+        case 'project':
+          template = {
+            name: '666'
+          }
+          break
+      }
+      this[type].push(template)
     },
-    // 移除教育经历
-    removeEducation(i) {
-      this.education.splice(i, 1)
-    },
-    // 添加教育经历
-    addEducation() {
-      this.education.push({
-        school: '',
-        major: '',
-        time: '',
-        course: []
-      })
-    },
+
     // 技能进度格式化
     formatter(value) {
       let tip = ''
