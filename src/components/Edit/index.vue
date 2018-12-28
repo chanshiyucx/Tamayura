@@ -430,20 +430,26 @@
           </b-field>
           <div v-for="(item, j) in company.project" :key="j">
             <b-collapse class="card company-project-card" :open="false">
-              <div slot="trigger" slot-scope="props" class="card-header">
+              <div slot="trigger" slot-scope="props1" class="card-header">
                 <p class="card-header-title">{{ item.name }}</p>
+                <a
+                  class="button is-light is-small is-focused is-rounded remove remove-project"
+                  v-if="isEdit.experience"
+                  @click="removeProject(i, j)"
+                >
+                  <span class="icon is-small"> <i class="fas fa-minus"></i> </span>
+                </a>
                 <a class="card-header-icon">
-                  <b-icon :icon="props.open ? 'menu-down' : 'menu-up'"> </b-icon>
+                  <b-icon
+                    pack="fas"
+                    :icon="props1.open ? 'angle-down' : 'angle-up'"
+                    size="is-small"
+                  >
+                  </b-icon>
                 </a>
               </div>
               <div class="card-content">
                 <div class="content">
-                  <a
-                    class="button is-small is-danger is-focused is-rounded remove"
-                    v-if="isEdit.experience && j > 0"
-                  >
-                    <span class="icon is-small"> <i class="fas fa-times"></i> </span>
-                  </a>
                   <b-field>
                     <b-input
                       v-model="item.name"
@@ -487,9 +493,12 @@
               </div>
             </b-collapse>
           </div>
+          <div v-if="isEdit.experience" class="add-box">
+            <a class="button is-success is-outlined" @click="addProject(i, j)">添加在职项目</a>
+          </div>
         </div>
         <div v-if="isEdit.experience" class="add-box">
-          <a class="button is-primary is-outlined" @click="addItem('experience')">添加</a>
+          <a class="button is-primary is-outlined" @click="addItem('experience')">添加工作经历</a>
         </div>
       </div>
       <footer class="card-footer">
@@ -735,7 +744,10 @@ export default {
       }
       this[type].push(template)
     },
-
+    // 移除工作经历的项目
+    removeProject(i, j) {
+      this.experience[i].project.splice(j, 1)
+    },
     // 技能进度格式化
     formatter(value) {
       let tip = ''
