@@ -5,14 +5,15 @@ import JsPDF from 'jspdf'
 export default {
   install(Vue) {
     Vue.prototype.getPdf = function(title) {
-      html2Canvas(document.querySelector('#pdfDom'), {
+      const opts = {
+        scale: 4,
         useCORS: true,
-        allowTaint: false,
-        taintTest: false,
-        pagesplit: true,
-        optimized: false,
-        logging: true
-      }).then(function(canvas) {
+        allowTaint: false, //允许加载跨域的图片
+        tainttest: true, //检测每张图片都已经加载完成
+        logging: true //日志开关，发布的时候记得改成false
+      }
+
+      html2Canvas(document.getElementById('pdfDom'), opts).then(function(canvas) {
         let contentWidth = canvas.width
         let contentHeight = canvas.height
         let pageHeight = (contentWidth / 592.28) * 841.89
