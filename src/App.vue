@@ -53,6 +53,7 @@
         @saveSetting="saveSetting"
         @back="back"
         @setColor="setColor"
+        @setAbout="setAbout"
       />
     </Push>
     <div id="page-wrap" class="container">
@@ -152,6 +153,10 @@ export default {
       } else {
         this.color[type] = color
       }
+    },
+    // About
+    setAbout(about) {
+      this.about = about
     },
     // 保存个人信息
     saveResume() {

@@ -192,7 +192,7 @@
       <b-input
         class="about-input"
         v-if="isEdit.about"
-        v-model="about"
+        v-model="editAbout"
         type="textarea"
         minlength="10"
         maxlength="140"
@@ -270,7 +270,8 @@ export default {
         a: 1
       },
       // 快照
-      snapshot: {}
+      snapshot: {},
+      editAbout: ''
     }
   },
   computed: {
@@ -304,11 +305,15 @@ export default {
       color.alpha = alpha
       const newColor = Color(color).string()
       this.$emit('setColor', { type: this.colorType, color: newColor })
+    },
+    editAbout(val) {
+      this.$emit('setAbout', val)
     }
   },
   created() {
-    const props = ['basicInfo', 'contact', 'skill']
+    const props = ['basicInfo', 'contact', 'skill', 'about']
     props.forEach(k => this.takeSnapShot(k))
+    this.editAbout = this.about
   },
   methods: {
     // 保存快照
@@ -366,6 +371,9 @@ export default {
       if (!this.isEdit[type]) {
         // 还原上一次快照
         this.$emit('save', { type, data: this.snapshot[type] })
+        if (type === 'about') {
+          this.editAbout = this.snapshot.about
+        }
       } else {
         this.takeSnapShot(type)
       }
