@@ -210,6 +210,86 @@
         </a>
       </footer>
     </b-collapse>
+    <!-- 教育经历 Education -->
+    <b-collapse class="card" :open.sync="isOpen.education">
+      <div class="card-header" slot="trigger">
+        <p class="card-header-title">
+          <b-icon pack="fa" icon="graduation-cap" size="is-small"> </b-icon> 教育经历
+        </p>
+        <a class="card-header-icon">
+          <b-icon pack="fas" :icon="isOpen.education ? 'angle-down' : 'angle-up'" size="is-small">
+          </b-icon>
+        </a>
+      </div>
+      <div class="card-content education">
+        <div
+          v-for="(item, i) in education"
+          :key="i"
+          :class="i !== education.length - 1 && 'edu-item'"
+        >
+          <a
+            class="button is-small is-danger is-focused is-rounded remove"
+            v-if="isEdit.education && i > 0"
+            @click="removeEducation(i)"
+          >
+            <span class="icon is-small"> <i class="fas fa-times"></i> </span>
+          </a>
+          <b-field>
+            <b-input
+              v-model="item.school"
+              :disabled="!isEdit.education"
+              placeholder="请填写毕业学校"
+              icon-pack="fas"
+              icon="university"
+            >
+            </b-input>
+          </b-field>
+          <b-field>
+            <b-input
+              v-model="item.major"
+              :disabled="!isEdit.education"
+              placeholder="请填写所修专业"
+              icon-pack="fab"
+              icon="leanpub"
+            >
+            </b-input>
+          </b-field>
+          <b-field>
+            <b-input
+              v-model="item.time"
+              :disabled="!isEdit.education"
+              placeholder="请填写在校时间"
+              icon-pack="fas"
+              icon="calendar-alt"
+            >
+            </b-input>
+          </b-field>
+          <b-field class="course">
+            <b-taginput
+              v-model="item.course"
+              :disabled="!isEdit.education"
+              ellipsis
+              icon="book"
+              icon-pack="fas"
+              placeholder="添加课程"
+            >
+            </b-taginput>
+          </b-field>
+        </div>
+        <div v-if="isEdit.education" class="add-box">
+          <a class="button is-primary is-outlined" @click="addEducation">添加</a>
+        </div>
+      </div>
+      <footer class="card-footer">
+        <a class="card-footer-item" @click="save('education')">保存</a>
+        <a class="card-footer-item" @click="edit('education')">
+          {{ isEdit.education ? '取消' : '编辑' }}
+        </a>
+        <a class="card-footer-item" @click="toggleHidden('education')">
+          {{ hidden.education ? '显示' : '隐藏' }}
+        </a>
+      </footer>
+    </b-collapse>
   </div>
 </template>
 <script>
@@ -244,6 +324,9 @@ export default {
     },
     about: {
       type: String
+    },
+    education: {
+      type: Array
     }
   },
   data() {
@@ -252,14 +335,16 @@ export default {
         basicInfo: false,
         contact: false,
         skill: false,
-        about: false
+        about: false,
+        education: false
       },
       isOpen: {
         theme: false,
         basicInfo: false,
         contact: false,
         skill: false,
-        about: false
+        about: false,
+        education: false
       },
       colorType: 'sidebar',
       pickColor: {
@@ -311,7 +396,7 @@ export default {
     }
   },
   created() {
-    const props = ['basicInfo', 'contact', 'skill', 'about']
+    const props = ['basicInfo', 'contact', 'skill', 'about', 'education']
     props.forEach(k => this.takeSnapShot(k))
     this.editAbout = this.about
   },
@@ -395,6 +480,19 @@ export default {
         name: '卖萌技',
         proficiency: 60,
         isEdit: true
+      })
+    },
+    // 移除教育经历
+    removeEducation(i) {
+      this.education.splice(i, 1)
+    },
+    // 添加教育经历
+    addEducation() {
+      this.education.push({
+        school: '',
+        major: '',
+        time: '',
+        course: []
       })
     },
     // 技能进度格式化
