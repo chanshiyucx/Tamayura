@@ -14,13 +14,13 @@
       </a>
     </div>
     <!-- 主题设置 Theme -->
-    <b-collapse class="card" :open.sync="isOpen.theme">
-      <div class="card-header" slot="trigger">
+    <b-collapse class="card" :open="false">
+      <div class="card-header" slot="trigger" slot-scope="props">
         <p class="card-header-title">
           <b-icon pack="fas" icon="palette" size="is-small"> </b-icon> 主题设置
         </p>
         <a class="card-header-icon">
-          <b-icon pack="fas" :icon="isOpen.theme ? 'angle-down' : 'angle-up'" size="is-small">
+          <b-icon pack="fas" :icon="props.open ? 'angle-down' : 'angle-up'" size="is-small">
           </b-icon>
         </a>
       </div>
@@ -58,13 +58,13 @@
       </footer>
     </b-collapse>
     <!-- 基本信息 BasicInfo -->
-    <b-collapse class="card" :open.sync="isOpen.basicInfo">
-      <div class="card-header" slot="trigger">
+    <b-collapse class="card" :open="false">
+      <div class="card-header" slot="trigger" slot-scope="props">
         <p class="card-header-title">
           <b-icon pack="fa" icon="address-card" size="is-small"> </b-icon> 基本信息
         </p>
         <a class="card-header-icon">
-          <b-icon pack="fas" :icon="isOpen.basicInfo ? 'angle-down' : 'angle-up'" size="is-small">
+          <b-icon pack="fas" :icon="props.open ? 'angle-down' : 'angle-up'" size="is-small">
           </b-icon>
         </a>
       </div>
@@ -90,13 +90,13 @@
       </footer>
     </b-collapse>
     <!-- 联系方式 Contact -->
-    <b-collapse class="card" :open.sync="isOpen.contact">
-      <div class="card-header" slot="trigger">
+    <b-collapse class="card" :open="false">
+      <div class="card-header" slot="trigger" slot-scope="props">
         <p class="card-header-title">
           <b-icon pack="fas" icon="mobile-alt" size="is-small"> </b-icon> 联系方式
         </p>
         <a class="card-header-icon">
-          <b-icon pack="fas" :icon="isOpen.contact ? 'angle-down' : 'angle-up'" size="is-small">
+          <b-icon pack="fas" :icon="props.open ? 'angle-down' : 'angle-up'" size="is-small">
           </b-icon>
         </a>
       </div>
@@ -122,13 +122,13 @@
       </footer>
     </b-collapse>
     <!-- 技能树 Skill -->
-    <b-collapse class="card" :open.sync="isOpen.skill">
-      <div class="card-header" slot="trigger">
+    <b-collapse class="card" :open="false">
+      <div class="card-header" slot="trigger" slot-scope="props">
         <p class="card-header-title">
           <b-icon pack="fab" icon="empire" size="is-small"> </b-icon> 技能树
         </p>
         <a class="card-header-icon">
-          <b-icon pack="fas" :icon="isOpen.skill ? 'angle-down' : 'angle-up'" size="is-small">
+          <b-icon pack="fas" :icon="props.open ? 'angle-down' : 'angle-up'" size="is-small">
           </b-icon>
         </a>
       </div>
@@ -179,13 +179,13 @@
       </footer>
     </b-collapse>
     <!-- 关于我 About -->
-    <b-collapse class="card" :open.sync="isOpen.about">
-      <div class="card-header" slot="trigger">
+    <b-collapse class="card" :open="false">
+      <div class="card-header" slot="trigger" slot-scope="props">
         <p class="card-header-title">
           <b-icon pack="fa" icon="smile-wink" size="is-small"> </b-icon> 关于我
         </p>
         <a class="card-header-icon">
-          <b-icon pack="fas" :icon="isOpen.about ? 'angle-down' : 'angle-up'" size="is-small">
+          <b-icon pack="fas" :icon="props.open ? 'angle-down' : 'angle-up'" size="is-small">
           </b-icon>
         </a>
       </div>
@@ -211,13 +211,13 @@
       </footer>
     </b-collapse>
     <!-- 教育经历 Education -->
-    <b-collapse class="card" :open.sync="isOpen.education">
-      <div class="card-header" slot="trigger">
+    <b-collapse class="card" :open="false">
+      <div class="card-header" slot="trigger" slot-scope="props">
         <p class="card-header-title">
           <b-icon pack="fa" icon="graduation-cap" size="is-small"> </b-icon> 教育经历
         </p>
         <a class="card-header-icon">
-          <b-icon pack="fas" :icon="isOpen.education ? 'angle-down' : 'angle-up'" size="is-small">
+          <b-icon pack="fas" :icon="props.open ? 'angle-down' : 'angle-up'" size="is-small">
           </b-icon>
         </a>
       </div>
@@ -291,13 +291,13 @@
       </footer>
     </b-collapse>
     <!-- 个人项目 Project -->
-    <b-collapse class="card" :open.sync="isOpen.project">
-      <div class="card-header" slot="trigger">
+    <b-collapse class="card" :open="false">
+      <div class="card-header" slot="trigger" slot-scope="props">
         <p class="card-header-title">
           <b-icon pack="fas" icon="laptop-code" size="is-small"> </b-icon> 个人项目
         </p>
         <a class="card-header-icon">
-          <b-icon pack="fas" :icon="isOpen.project ? 'angle-down' : 'angle-up'" size="is-small">
+          <b-icon pack="fas" :icon="props.open ? 'angle-down' : 'angle-up'" size="is-small">
           </b-icon>
         </a>
       </div>
@@ -352,7 +352,7 @@
           </b-field>
           <b-input
             :disabled="!isEdit.project"
-            v-model="item.content"
+            v-model="item.summary"
             type="textarea"
             minlength="10"
             maxlength="140"
@@ -375,13 +375,13 @@
       </footer>
     </b-collapse>
     <!-- 工作经历 Experience -->
-    <b-collapse class="card" :open.sync="isOpen.experience">
-      <div class="card-header" slot="trigger">
+    <b-collapse class="card" :open="false">
+      <div class="card-header" slot="trigger" slot-scope="props">
         <p class="card-header-title">
           <b-icon pack="fas" icon="briefcase" size="is-small"> </b-icon> 工作经历
         </p>
         <a class="card-header-icon">
-          <b-icon pack="fas" :icon="isOpen.experience ? 'angle-down' : 'angle-up'" size="is-small">
+          <b-icon pack="fas" :icon="props.open ? 'angle-down' : 'angle-up'" size="is-small">
           </b-icon>
         </a>
       </div>
@@ -389,7 +389,7 @@
         <div
           v-for="(company, i) in experience"
           :key="i"
-          :class="i !== experience.length - 1 && 'field-box'"
+          :class="['company-box', i === experience.length - 1 && 'last']"
         >
           <a
             class="button is-small is-danger is-focused is-rounded remove"
@@ -428,57 +428,64 @@
             >
             </b-input>
           </b-field>
-          <h3>在职项目：</h3>
-          <div
-            v-for="(item, j) in company.project"
-            :key="j"
-            :class="j !== company.project.length - 1 && 'field-box'"
-          >
-            <a
-              class="button is-small is-danger is-focused is-rounded remove"
-              v-if="isEdit.experience && j > 0"
-            >
-              <span class="icon is-small"> <i class="fas fa-times"></i> </span>
-            </a>
-            <b-field>
-              <b-input
-                v-model="item.name"
-                :disabled="!isEdit.experience"
-                placeholder="请填写项目名称"
-                icon-pack="fas"
-                icon="code"
-              >
-              </b-input>
-            </b-field>
-            <b-field>
-              <b-input
-                v-model="item.description"
-                :disabled="!isEdit.experience"
-                placeholder="请填写项目简介"
-                icon-pack="fas"
-                icon="bookmark"
-              >
-              </b-input>
-            </b-field>
-            <b-field>
-              <b-input
-                v-model="item.link"
-                :disabled="!isEdit.experience"
-                placeholder="请填写在线预览地址【如果有的话】"
-                icon-pack="fab"
-                icon="codepen"
-              >
-              </b-input>
-            </b-field>
-            <b-input
-              :disabled="!isEdit.experience"
-              v-model="item.content"
-              type="textarea"
-              minlength="10"
-              maxlength="140"
-              placeholder="项目详细介绍..."
-            >
-            </b-input>
+          <div v-for="(item, j) in company.project" :key="j">
+            <b-collapse class="card company-project-card" :open="false">
+              <div slot="trigger" slot-scope="props" class="card-header">
+                <p class="card-header-title">{{ item.name }}</p>
+                <a class="card-header-icon">
+                  <b-icon :icon="props.open ? 'menu-down' : 'menu-up'"> </b-icon>
+                </a>
+              </div>
+              <div class="card-content">
+                <div class="content">
+                  <a
+                    class="button is-small is-danger is-focused is-rounded remove"
+                    v-if="isEdit.experience && j > 0"
+                  >
+                    <span class="icon is-small"> <i class="fas fa-times"></i> </span>
+                  </a>
+                  <b-field>
+                    <b-input
+                      v-model="item.name"
+                      :disabled="!isEdit.experience"
+                      placeholder="请填写项目名称"
+                      icon-pack="fas"
+                      icon="code"
+                    >
+                    </b-input>
+                  </b-field>
+                  <b-field>
+                    <b-input
+                      v-model="item.description"
+                      :disabled="!isEdit.experience"
+                      placeholder="请填写项目简介"
+                      icon-pack="fas"
+                      icon="bookmark"
+                    >
+                    </b-input>
+                  </b-field>
+                  <b-field>
+                    <b-input
+                      v-model="item.link"
+                      :disabled="!isEdit.experience"
+                      placeholder="请填写在线预览地址【如果有的话】"
+                      icon-pack="fas"
+                      icon="laptop"
+                    >
+                    </b-input>
+                  </b-field>
+                  <b-input
+                    :disabled="!isEdit.experience"
+                    v-model="item.summary"
+                    type="textarea"
+                    minlength="10"
+                    maxlength="140"
+                    placeholder="项目详细介绍..."
+                  >
+                  </b-input>
+                </div>
+              </div>
+            </b-collapse>
           </div>
         </div>
         <div v-if="isEdit.experience" class="add-box">
