@@ -6,12 +6,13 @@
         <li v-for="(company, i) in experience" :key="i">
           <div class="company">
             <img
+              class="logo"
               v-if="company.companyLogo"
               :src="company.companyLogo"
               alt=""
               crossOrigin="Anonymous"
             />
-            <h3>{{ company.companyName }}</h3>
+            <h3>{{ company.companyName }} （{{ company.time }}）</h3>
           </div>
           <div class="project-item" v-for="(item, i) in company.project" :key="i">
             <div>

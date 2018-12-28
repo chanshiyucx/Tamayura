@@ -342,7 +342,7 @@
           </b-field>
           <b-field>
             <b-input
-              v-model="item.demo"
+              v-model="item.link"
               :disabled="!isEdit.project"
               placeholder="请填写在线预览地址【如果有的话】"
               icon-pack="fab"
@@ -371,6 +371,127 @@
         </a>
         <a class="card-footer-item" @click="toggleHidden('project')">
           {{ hidden.project ? '显示' : '隐藏' }}
+        </a>
+      </footer>
+    </b-collapse>
+    <!-- 工作经历 Experience -->
+    <b-collapse class="card" :open.sync="isOpen.experience">
+      <div class="card-header" slot="trigger">
+        <p class="card-header-title">
+          <b-icon pack="fas" icon="briefcase" size="is-small"> </b-icon> 工作经历
+        </p>
+        <a class="card-header-icon">
+          <b-icon pack="fas" :icon="isOpen.experience ? 'angle-down' : 'angle-up'" size="is-small">
+          </b-icon>
+        </a>
+      </div>
+      <div class="card-content experience">
+        <div
+          v-for="(company, i) in experience"
+          :key="i"
+          :class="i !== experience.length - 1 && 'field-box'"
+        >
+          <a
+            class="button is-small is-danger is-focused is-rounded remove"
+            v-if="isEdit.experience && i > 0"
+            @click="removeItem('experience', i)"
+          >
+            <span class="icon is-small"> <i class="fas fa-times"></i> </span>
+          </a>
+          <b-field>
+            <b-input
+              v-model="company.companyLogo"
+              :disabled="!isEdit.experience"
+              placeholder="请填写公司 Logo 【如果有的话】"
+              icon-pack="fas"
+              icon="image"
+            >
+            </b-input>
+          </b-field>
+          <b-field>
+            <b-input
+              v-model="company.companyName"
+              :disabled="!isEdit.experience"
+              placeholder="请填写公司名称"
+              icon-pack="fas"
+              icon="building"
+            >
+            </b-input>
+          </b-field>
+          <b-field>
+            <b-input
+              v-model="company.time"
+              :disabled="!isEdit.experience"
+              placeholder="请填写在职时间"
+              icon-pack="fas"
+              icon="calendar-alt"
+            >
+            </b-input>
+          </b-field>
+          <h3>在职项目：</h3>
+          <div
+            v-for="(item, j) in company.project"
+            :key="j"
+            :class="j !== company.project.length - 1 && 'field-box'"
+          >
+            <a
+              class="button is-small is-danger is-focused is-rounded remove"
+              v-if="isEdit.experience && j > 0"
+            >
+              <span class="icon is-small"> <i class="fas fa-times"></i> </span>
+            </a>
+            <b-field>
+              <b-input
+                v-model="item.name"
+                :disabled="!isEdit.experience"
+                placeholder="请填写项目名称"
+                icon-pack="fas"
+                icon="code"
+              >
+              </b-input>
+            </b-field>
+            <b-field>
+              <b-input
+                v-model="item.description"
+                :disabled="!isEdit.experience"
+                placeholder="请填写项目简介"
+                icon-pack="fas"
+                icon="bookmark"
+              >
+              </b-input>
+            </b-field>
+            <b-field>
+              <b-input
+                v-model="item.link"
+                :disabled="!isEdit.experience"
+                placeholder="请填写在线预览地址【如果有的话】"
+                icon-pack="fab"
+                icon="codepen"
+              >
+              </b-input>
+            </b-field>
+            <b-input
+              :disabled="!isEdit.experience"
+              v-model="item.content"
+              type="textarea"
+              minlength="10"
+              maxlength="140"
+              placeholder="项目详细介绍..."
+            >
+            </b-input>
+          </div>
+        </div>
+        <div v-if="isEdit.experience" class="add-box">
+          <a class="button is-primary is-outlined" @click="addItem('experience')">添加</a>
+        </div>
+      </div>
+      <footer class="card-footer">
+        <a class="card-footer-item" @click="save('experience')">保存</a>
+        <a class="card-footer-item" @click="edit('experience')">
+          {{ isEdit.experience ? '取消' : '编辑' }}
+        </a>
+        <a class="card-footer-item" @click="toggleHidden('experience')">
+          {{ hidden.experience ? '显示' : '隐藏' }}
         </a>
       </footer>
     </b-collapse>
@@ -414,6 +535,9 @@ export default {
     },
     project: {
       type: Array
+    },
+    experience: {
+      type: Array
     }
   },
   data() {
@@ -424,7 +548,8 @@ export default {
         skill: false,
         about: false,
         education: false,
-        project: false
+        project: false,
+        experience: false
       },
       isOpen: {
         theme: false,
@@ -433,7 +558,8 @@ export default {
         skill: false,
         about: false,
         education: false,
-        project: false
+        project: false,
+        experience: false
       },
       colorType: 'sidebar',
       pickColor: {
@@ -485,7 +611,7 @@ export default {
     }
   },
   created() {
-    const props = ['basicInfo', 'contact', 'skill', 'about', 'education', 'project']
+    const props = ['basicInfo', 'contact', 'skill', 'about', 'education', 'project', 'experience']
     props.forEach(k => this.takeSnapShot(k))
     this.editAbout = this.about
   },
@@ -584,9 +710,21 @@ export default {
           break
         case 'project':
           template = {
-            name: '666'
+            name: '',
+            description: '',
+            link: '',
+            summary: '',
+            previewImage: []
           }
           break
+        case 'experience':
+          template = {
+            companyLogo: '',
+            companyName: '',
+            time: '',
+            role: '',
+            project: []
+          }
       }
       this[type].push(template)
     },

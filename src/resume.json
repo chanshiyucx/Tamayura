@@ -47,10 +47,9 @@
   ],
   "experience": [
     {
-      "companyLogo": "",
-      "companyName": "o(*￣▽￣*)ブ",
+      "companyLogo": "https://i.loli.net/2018/12/28/5c25e9ecc31f4.jpg",
+      "companyName": "卖萌科技有限公司",
       "time": "2016/7 - 2018/6",
-      "role": "Web developer",
       "project": [
         {
           "name": "项目一",
@@ -67,6 +66,20 @@
           "description": "描述二",
           "link": "https://chanshiyu.com/",
           "summary": "呃呃呃呃项目总结总结总结项目总结总结总结！！！！项目总结总结总结！！！！项目总结总结总结！！！！！！！！",
+          "previewImage": []
+        }
+      ]
+    },
+    {
+      "companyLogo": "https://i.loli.net/2018/12/28/5c25e9ecc31f4.jpg",
+      "companyName": "卖萌科技有限公司",
+      "time": "2018/6 - 至今",
+      "project": [
+        {
+          "name": "项目一",
+          "description": "描述一",
+          "link": "https://chanshiyu.com/",
+          "summary": "项目总结总结总结！！！！项目总结总结总结！！！！项目总结总结总结！！！！项目总结总结总结！！！！",
           "previewImage": [
             "https://i.loli.net/2018/12/28/5c25c924979bf.png",
             "https://i.loli.net/2018/12/28/5c25c924979bf.png"
