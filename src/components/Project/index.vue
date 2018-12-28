@@ -3,14 +3,14 @@
     <h2>Project 个人项目</h2>
     <div class="content">
       <ul>
-        <li v-for="(item, i) in project" :key="i">
+        <li class="project-item" v-for="(item, i) in project" :key="i">
           <div>
-            <a :href="item.sourceCode || '/'" target="_blank">
+            <a class="project-name" :href="item.sourceCode || '/'" target="_blank">
               {{ item.name }} - {{ item.description }}
             </a>
+            <a class="link" v-if="item.link" :href="item.link" target="_blank"> Demo </a>
           </div>
-          <div v-if="item.demo"><a :href="item.demo || '/'" target="_blank"> 在线预览 </a></div>
-          <div>{{ item.content }}</div>
+          <div>{{ item.summary }}</div>
           <ul class="preview">
             <li v-for="(item, i) in item.previewImage" :key="i">
               <img alt="" :src="item" crossOrigin="Anonymous" />

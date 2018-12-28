@@ -48,6 +48,7 @@
         :about="about"
         :education="education"
         :project="project"
+        :experience="experience"
         @handleCloseMenu="handleCloseMenu"
         @reset="reset"
         @saveAll="saveAll"
@@ -73,6 +74,7 @@
           <div class="main">
             <Education v-if="!hidden.education" :education="education" />
             <Project v-if="!hidden.project" :project="project" />
+            <Experience v-if="!hidden.experience" :experience="experience" />
           </div>
         </div>
         <Footer />
@@ -82,13 +84,13 @@
 </template>
 <script>
 import { localSave, localRead, deepCopy } from './utils/tool'
-import { Footer, Edit, Push, Sidebar, Education, Project } from './components'
+import { Footer, Edit, Push, Sidebar, Education, Project, Experience } from './components'
 import content from './resume.json'
 import map from './map.json'
 
 // 个人信息
 const localContent = localRead('resume') ? JSON.parse(localRead('resume')) : deepCopy(content)
-const { basicInfo, contact, skill, about, education, project } = localContent
+const { basicInfo, contact, skill, about, education, project, experience } = localContent
 // 基本配置
 const setting = localRead('setting') ? JSON.parse(localRead('setting')) : deepCopy(map.setting)
 const { hidden, color } = setting
@@ -101,7 +103,8 @@ export default {
     Edit,
     Sidebar,
     Education,
-    Project
+    Project,
+    Experience
   },
   data() {
     return {
@@ -114,7 +117,8 @@ export default {
       skill,
       about,
       education,
-      project
+      project,
+      experience
     }
   },
   methods: {
@@ -179,7 +183,8 @@ export default {
         skill: this.skill,
         about: this.about,
         education: this.education,
-        project: this.project
+        project: this.project,
+        experience: this.experience
       }
       localSave('resume', JSON.stringify(resume))
     },

@@ -37,11 +37,41 @@
       "name": "HeartBeat",
       "description": "A awesome spa blog theme",
       "sourceCode": "https://github.com/chanshiyucx/HeartBeat",
-      "demo": "https://chanshiyu.com/",
-      "content": "HeartBeat 是一个基于 UmiJS 开发的 SPA 单页面博客应用程序，后台数据源依托于 Github Issues ，使用开源项目 Gitalk 作为博客评论系统。",
+      "link": "https://chanshiyu.com/",
+      "summary": "HeartBeat 是一个基于 UmiJS 开发的 SPA 单页面博客应用程序，后台数据源依托于 Github Issues ，使用开源项目 Gitalk 作为博客评论系统。",
       "previewImage": [
         "https://i.loli.net/2018/12/28/5c25c924979bf.png",
         "https://i.loli.net/2018/12/28/5c25c924979bf.png"
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "companyLogo": "",
+      "companyName": "o(*￣▽￣*)ブ",
+      "time": "2016/7 - 2018/6",
+      "role": "Web developer",
+      "project": [
+        {
+          "name": "项目一",
+          "description": "描述一",
+          "link": "https://chanshiyu.com/",
+          "summary": "项目总结总结总结！！！！项目总结总结总结！！！！项目总结总结总结！！！！项目总结总结总结！！！！",
+          "previewImage": [
+            "https://i.loli.net/2018/12/28/5c25c924979bf.png",
+            "https://i.loli.net/2018/12/28/5c25c924979bf.png"
+          ]
+        },
+        {
+          "name": "项目二",
+          "description": "描述二",
+          "link": "https://chanshiyu.com/",
+          "summary": "呃呃呃呃项目总结总结总结项目总结总结总结！！！！项目总结总结总结！！！！项目总结总结总结！！！！！！！！",
+          "previewImage": [
+            "https://i.loli.net/2018/12/28/5c25c924979bf.png",
+            "https://i.loli.net/2018/12/28/5c25c924979bf.png"
+          ]
+        }
       ]
     }
   ]
