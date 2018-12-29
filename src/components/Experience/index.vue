@@ -1,6 +1,6 @@
 <template>
   <div id="Experience">
-    <h2>Experience 工作经历</h2>
+    <h2 :style="{ color: color.h2 }">Experience 工作经历</h2>
     <div class="content">
       <ul>
         <li v-for="(company, i) in experience" :key="i">
@@ -12,7 +12,7 @@
               alt=""
               crossOrigin="Anonymous"
             />
-            <h3>{{ company.companyName }} （{{ company.time }}）</h3>
+            <h3 :style="{ color: color.h3 }">{{ company.companyName }} （{{ company.time }}）</h3>
           </div>
           <div class="project-item" v-for="(item, i) in company.project" :key="i">
             <div>
@@ -32,9 +32,13 @@
   </div>
 </template>
 <script>
+import Color from 'color'
 export default {
   name: 'Experience',
   props: {
+    color: {
+      type: Object
+    },
     experience: {
       type: Array
     }

@@ -27,7 +27,7 @@
       <div class="card-content setting">
         <ul>
           <li>
-            <span>背景色：</span>
+            <span>主题色：</span>
             <span
               class="color-box"
               :style="getStyle('sidebar')"
@@ -47,6 +47,14 @@
               :style="getStyle('skill-to')"
               @click="setColorType('skill-to')"
             ></span>
+          </li>
+          <li>
+            <span>二级标题：</span>
+            <span class="color-box" :style="getStyle('h2')" @click="setColorType('h2')"></span>
+          </li>
+          <li>
+            <span>三级标题：</span>
+            <span class="color-box" :style="getStyle('h3')" @click="setColorType('h3')"></span>
           </li>
         </ul>
 
@@ -70,9 +78,9 @@
       </div>
       <div class="card-content">
         <div v-for="(item, i) in getBasicInfoList" :key="i">
-          <b-field>
+          <b-field v-if="item.label">
             <b-input
-              v-model="basicInfo[item.key]"
+              v-model="item.infoItem.value"
               :placeholder="`${item.label}（不填则不显示该栏）`"
               :icon-pack="item.pack"
               :icon="item.icon"
@@ -80,6 +88,25 @@
             >
             </b-input>
           </b-field>
+          <b-field v-else>
+            <b-input
+              class="small-input"
+              v-model="item.infoItem.type"
+              :placeholder="item.type || '类型'"
+              :disabled="!isEdit.basicInfo"
+            >
+            </b-input>
+            <b-input
+              class="big-input"
+              v-model="item.infoItem.value"
+              placeholder="自定义信息（不填则不显示该栏）"
+              :disabled="!isEdit.basicInfo"
+            >
+            </b-input>
+          </b-field>
+        </div>
+        <div v-if="isEdit.basicInfo" class="add-box">
+          <a class="button is-primary is-outlined" @click="addItem('basicInfo')">添加</a>
         </div>
       </div>
       <footer class="card-footer">
@@ -102,9 +129,9 @@
       </div>
       <div class="card-content">
         <div v-for="(item, i) in getContactList" :key="i">
-          <b-field>
+          <b-field v-if="item.label">
             <b-input
-              v-model="contact[item.key]"
+              v-model="item.infoItem.value"
               :placeholder="`${item.label}（不填则不显示该栏）`"
               :icon-pack="item.pack"
               :icon="item.icon"
@@ -112,6 +139,25 @@
             >
             </b-input>
           </b-field>
+          <b-field v-else>
+            <b-input
+              class="small-input"
+              v-model="item.infoItem.type"
+              :placeholder="item.type || '类型'"
+              :disabled="!isEdit.contact"
+            >
+            </b-input>
+            <b-input
+              class="big-input"
+              v-model="item.infoItem.value"
+              placeholder="自定义信息（不填则不显示该栏）"
+              :disabled="!isEdit.contact"
+            >
+            </b-input>
+          </b-field>
+        </div>
+        <div v-if="isEdit.contact" class="add-box">
+          <a class="button is-primary is-outlined" @click="addItem('contact')">添加</a>
         </div>
       </div>
       <footer class="card-footer">
@@ -122,13 +168,13 @@
       </footer>
     </b-collapse>
     <!-- 技能树 Skill -->
-    <b-collapse class="card" :open="false">
-      <div class="card-header" slot="trigger" slot-scope="props">
+    <b-collapse class="card" :open.sync="isOpen.skill">
+      <div class="card-header" slot="trigger">
         <p class="card-header-title">
           <b-icon pack="fab" icon="empire" size="is-small"> </b-icon> 技能树
         </p>
         <a class="card-header-icon">
-          <b-icon pack="fas" :icon="props.open ? 'angle-down' : 'angle-up'" size="is-small">
+          <b-icon pack="fas" :icon="isOpen.skill ? 'angle-down' : 'angle-up'" size="is-small">
           </b-icon>
         </a>
       </div>
@@ -334,7 +380,7 @@
             <b-input
               v-model="item.sourceCode"
               :disabled="!isEdit.project"
-              placeholder="请填写项目源码地址【如果有的话】"
+              placeholder="请填写项目源码地址（如果有的话）"
               icon-pack="fas"
               icon="code-branch"
             >
@@ -344,7 +390,7 @@
             <b-input
               v-model="item.link"
               :disabled="!isEdit.project"
-              placeholder="请填写在线预览地址【如果有的话】"
+              placeholder="请填写在线预览地址（如果有的话）"
               icon-pack="fab"
               icon="codepen"
             >
@@ -402,7 +448,7 @@
             <b-input
               v-model="company.companyLogo"
               :disabled="!isEdit.experience"
-              placeholder="请填写公司 Logo 【如果有的话】"
+              placeholder="请填写公司 Logo （如果有的话）"
               icon-pack="fas"
               icon="image"
             >
@@ -474,7 +520,7 @@
                     <b-input
                       v-model="item.link"
                       :disabled="!isEdit.experience"
-                      placeholder="请填写在线预览地址【如果有的话】"
+                      placeholder="请填写在线预览地址（如果有的话）"
                       icon-pack="fas"
                       icon="laptop"
                     >
@@ -535,10 +581,10 @@ export default {
       type: Object
     },
     basicInfo: {
-      type: Object
+      type: Array
     },
     contact: {
-      type: Object
+      type: Array
     },
     skill: {
       type: Array
@@ -568,14 +614,7 @@ export default {
         experience: false
       },
       isOpen: {
-        theme: false,
-        basicInfo: false,
-        contact: false,
-        skill: false,
-        about: false,
-        education: false,
-        project: false,
-        experience: false
+        skill: false
       },
       colorType: 'sidebar',
       pickColor: {
@@ -593,23 +632,27 @@ export default {
   computed: {
     getBasicInfoList() {
       const link = this.map.basicInfo
-      return Object.keys(this.basicInfo).map(k => ({
-        key: k,
-        label: link[k].label,
-        icon: link[k].icon,
-        pack: link[k].pack || 'fas',
-        value: this.basicInfo[k]
-      }))
+      return this.basicInfo.map(o => {
+        const linkItem = link[o.type] || {}
+        return {
+          label: linkItem.label,
+          infoItem: o,
+          icon: linkItem.icon,
+          pack: linkItem.pack || 'fas'
+        }
+      })
     },
     getContactList() {
       const link = this.map.contact
-      return Object.keys(this.contact).map(k => ({
-        key: k,
-        label: link[k].label,
-        icon: link[k].icon,
-        pack: link[k].pack || 'fas',
-        value: this.contact[k]
-      }))
+      return this.contact.map(o => {
+        const linkItem = link[o.type] || {}
+        return {
+          label: linkItem.label,
+          infoItem: o,
+          icon: linkItem.icon,
+          pack: linkItem.pack || 'fas'
+        }
+      })
     }
   },
   watch: {
@@ -709,6 +752,18 @@ export default {
     addItem(type) {
       let template
       switch (type) {
+        case 'basicInfo':
+          template = {
+            type: '',
+            value: ''
+          }
+          break
+        case 'contact':
+          template = {
+            type: '',
+            value: ''
+          }
+          break
         case 'skill':
           template = {
             name: '卖萌技',
@@ -743,6 +798,16 @@ export default {
           }
       }
       this[type].push(template)
+    },
+    // 添加工作经历的项目
+    addProject(i) {
+      this.experience[i].project.push({
+        name: '',
+        description: '',
+        link: '',
+        summary: '',
+        previewImage: []
+      })
     },
     // 移除工作经历的项目
     removeProject(i, j) {
@@ -803,6 +868,12 @@ export default {
           break
         case 'skill-to':
           style = { backgroundColor: this.color.skill.to }
+          break
+        case 'h2':
+          style = { backgroundColor: this.color.h2 }
+          break
+        case 'h3':
+          style = { backgroundColor: this.color.h3 }
           break
       }
       if (type === this.colorType) {

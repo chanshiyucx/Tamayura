@@ -20,12 +20,8 @@
       "label": "头像",
       "icon": "user-circle"
     },
-    "school": {
-      "label": "学校",
-      "icon": "graduation-cap"
-    },
     "major": {
-      "label": "职业",
+      "label": "职位",
       "icon": "briefcase"
     }
   },
@@ -69,7 +65,9 @@
       "skill": {
         "from": "#f75bcb",
         "to": "#0595f5"
-      }
+      },
+      "h2": "#8d9cd2",
+      "h3": "#5b70be"
     }
   }
 }

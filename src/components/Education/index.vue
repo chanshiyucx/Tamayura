@@ -1,6 +1,6 @@
 <template>
   <div id="Education">
-    <h2>Education 教育经历</h2>
+    <h2 :style="{ color: color.h2 }">Education 教育经历</h2>
     <div class="content">
       <ul>
         <li v-for="(item, i) in education" :key="i">
@@ -16,6 +16,9 @@
 export default {
   name: 'Education',
   props: {
+    color: {
+      type: Object
+    },
     education: {
       type: Array
     }

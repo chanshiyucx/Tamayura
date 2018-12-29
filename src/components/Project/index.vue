@@ -1,6 +1,6 @@
 <template>
   <div id="Project">
-    <h2>Project 个人项目</h2>
+    <h2 :style="{ color: color.h2 }">Project 个人项目</h2>
     <div class="content">
       <ul>
         <li class="project-item" v-for="(item, i) in project" :key="i">
@@ -25,6 +25,9 @@
 export default {
   name: 'Project',
   props: {
+    color: {
+      type: Object
+    },
     project: {
       type: Array
     }

@@ -1,9 +1,9 @@
 <template>
   <div class="sidebar" :style="{ backgroundColor: color.sidebar }">
     <div class="avatar-wrap">
-      <img :src="basicInfo.avatar" alt="" crossOrigin="Anonymous" />
-      <h1>{{ basicInfo.name }}</h1>
-      <p>{{ basicInfo.desc }}</p>
+      <img :src="personInfo.avatar" alt="" crossOrigin="Anonymous" />
+      <h1>{{ personInfo.name }}</h1>
+      <p>{{ personInfo.desc }}</p>
     </div>
     <div class="side">
       <h2>Basic 基本信息</h2>
@@ -42,7 +42,7 @@
     </div>
     <div class="side" v-if="!hidden.about">
       <h2>About 关于我</h2>
-      <div>{{ about }}</div>
+      <div class="about">{{ about }}</div>
     </div>
   </div>
 </template>
@@ -64,10 +64,10 @@ export default {
       type: Object
     },
     basicInfo: {
-      type: Object
+      type: Array
     },
     contact: {
-      type: Object
+      type: Array
     },
     skill: {
       type: Array
@@ -80,31 +80,39 @@ export default {
     return {}
   },
   computed: {
+    personInfo() {
+      const avatar = this.basicInfo.find(o => o.type === 'avatar').value
+      const name = this.basicInfo.find(o => o.type === 'name').value
+      const desc = this.basicInfo.find(o => o.type === 'desc').value
+      return {
+        avatar,
+        name,
+        desc
+      }
+    },
     getBasicInfoList() {
       const link = this.map.basicInfo
-      return Object.keys(this.basicInfo)
-        .filter(k => k !== 'name' && k !== 'desc' && k !== 'avatar' && !!this.basicInfo[k])
-        .map(k => ({
-          key: k,
-          label: link[k].label,
-          icon: link[k].icon,
-          pack: link[k].pack || 'fas',
-          value: this.basicInfo[k]
+      return this.basicInfo
+        .filter(
+          o =>
+            o.type !== 'name' && o.type !== 'desc' && o.type !== 'avatar' && !!o.type && !!o.value
+        )
+        .map(o => ({
+          label: link[o.type] ? link[o.type].label : o.type,
+          value: o.value
         }))
     },
     getContactList() {
       const link = this.map.contact
-      return Object.keys(this.contact)
-        .filter(k => !!this.contact[k])
-        .map(k => ({
-          key: k,
-          label: link[k].label,
-          icon: link[k].icon,
-          pack: link[k].pack || 'fas',
-          link: link[k].link
-            ? `${this.contact[k].includes('http') ? '' : link[k].link}${this.contact[k]}`
-            : '',
-          value: this.contact[k]
+      return this.contact
+        .filter(o => !!o.type && !!o.value)
+        .map(o => ({
+          label: link[o.type] ? link[o.type].label : o.type,
+          value: o.value,
+          link:
+            link[o.type] && link[o.type].link
+              ? `${o.value.includes('http') ? '' : link[o.type].link}${o.value}`
+              : ''
         }))
     },
     processStyle() {

@@ -72,9 +72,9 @@
             :about="about"
           />
           <div class="main">
-            <Education v-if="!hidden.education" :education="education" />
-            <Project v-if="!hidden.project" :project="project" />
-            <Experience v-if="!hidden.experience" :experience="experience" />
+            <Education v-if="!hidden.education" :education="education" :color="color" />
+            <Project v-if="!hidden.project" :project="project" :color="color" />
+            <Experience v-if="!hidden.experience" :experience="experience" :color="color" />
           </div>
         </div>
         <Footer />
@@ -151,6 +151,10 @@ export default {
     // 保存或还原快照
     save({ type, data }) {
       this[type] = data || this[type]
+      // 剔除空项
+      if (type === 'basicInfo' || type === 'contact') {
+        this[type] = this[type].filter(o => !!o.type && !!o.value)
+      }
       this.saveResume()
     },
     // 还原
