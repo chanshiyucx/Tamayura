@@ -182,16 +182,16 @@
         <div class="skill-item" v-for="(item, i) in skill" :key="i">
           <div v-if="item.isEdit" class="skill-name">
             <b-input
-              v-model="item.name"
+              v-model="item.type"
               size="is-small"
               placeholder="You Skill"
               type="email"
             ></b-input>
           </div>
-          <div v-else class="skill-name">{{ item.name }}</div>
+          <div v-else class="skill-name">{{ item.type }}</div>
           <vue-slider
             v-if="isOpen.skill"
-            v-model="item.proficiency"
+            v-model="item.value"
             tooltip="hover"
             :width="190"
             :disabled="!isEdit.skill"
@@ -205,7 +205,7 @@
               borderWidth: 0
             }"
           ></vue-slider>
-          <div class="skill-precent">{{ item.proficiency }}%</div>
+          <div class="skill-precent">{{ item.value }}%</div>
           <span v-if="isEdit.skill" @click="removeItem('skill', i)">
             <i class="fas fa-times-circle"></i>
           </span>
@@ -396,15 +396,29 @@
             >
             </b-input>
           </b-field>
-          <b-input
-            :disabled="!isEdit.project"
-            v-model="item.summary"
-            type="textarea"
-            minlength="10"
-            maxlength="140"
-            placeholder="项目详细介绍..."
-          >
-          </b-input>
+          <b-field>
+            <b-input
+              :disabled="!isEdit.project"
+              v-model="item.summary"
+              type="textarea"
+              minlength="10"
+              maxlength="140"
+              placeholder="项目详细介绍..."
+            >
+            </b-input>
+          </b-field>
+          <b-field>
+            <b-input
+              :disabled="!isEdit.project"
+              :value="item.previewImage.join(',')"
+              @input="val => inputImg(val, item)"
+              type="textarea"
+              minlength="10"
+              maxlength="300"
+              placeholder="图片预览...（以逗号分隔）"
+            >
+            </b-input>
+          </b-field>
         </div>
         <div v-if="isEdit.project" class="add-box">
           <a class="button is-primary is-outlined" @click="addItem('project')">添加</a>
@@ -526,15 +540,29 @@
                     >
                     </b-input>
                   </b-field>
-                  <b-input
-                    :disabled="!isEdit.experience"
-                    v-model="item.summary"
-                    type="textarea"
-                    minlength="10"
-                    maxlength="140"
-                    placeholder="项目详细介绍..."
-                  >
-                  </b-input>
+                  <b-field>
+                    <b-input
+                      :disabled="!isEdit.experience"
+                      v-model="item.summary"
+                      type="textarea"
+                      minlength="10"
+                      maxlength="140"
+                      placeholder="项目详细介绍..."
+                    >
+                    </b-input>
+                  </b-field>
+                  <b-field>
+                    <b-input
+                      :disabled="!isEdit.experience"
+                      :value="item.previewImage.join(',')"
+                      @input="val => inputImg(val, item)"
+                      type="textarea"
+                      minlength="10"
+                      maxlength="300"
+                      placeholder="图片预览...（以逗号分隔）"
+                    >
+                    </b-input>
+                  </b-field>
                 </div>
               </div>
             </b-collapse>
@@ -767,7 +795,7 @@ export default {
         case 'skill':
           template = {
             name: '卖萌技',
-            proficiency: 60,
+            value: 60,
             isEdit: true
           }
           break
@@ -812,6 +840,12 @@ export default {
     // 移除工作经历的项目
     removeProject(i, j) {
       this.experience[i].project.splice(j, 1)
+    },
+    // 添加预览图
+    inputImg(val, item) {
+      if (val !== item.previewImage.join(',')) {
+        item.previewImage = val.split(',')
+      }
     },
     // 技能进度格式化
     formatter(value) {

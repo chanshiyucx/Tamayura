@@ -28,11 +28,11 @@
       <h2>Skills 技能树</h2>
       <ul class="skill">
         <li v-for="(item, i) in skill" :key="i">
-          <span class="skill-name">{{ item.name }}</span>
+          <span class="skill-name">{{ item.type }}</span>
           <vue-slider
             tooltip="false"
             disabled
-            :value="item.proficiency"
+            :value="item.value"
             :dotSize="0"
             :width="190"
             :processStyle="processStyle"

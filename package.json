@@ -1,7 +1,7 @@
 {
   "name": "tamayura",
   "version": "0.1.0",
-  "description": "A awesome resume generator",
+  "description": "An awesome resume generator",
   "author": "蝉時雨 <me@chanshiyu.com>",
   "license": "MIT",
   "scripts": {
