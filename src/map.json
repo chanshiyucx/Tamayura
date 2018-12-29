@@ -62,12 +62,12 @@
     },
     "color": {
       "sidebar": "#8d9cd2",
+      "link": "#7957d5",
       "skill": {
         "from": "#f75bcb",
-        "to": "#0595f5"
-      },
-      "h2": "#8d9cd2",
-      "h3": "#5b70be"
+        "to": "#0595f5",
+        "bg": "#acb4cf"
+      }
     }
   }
 }

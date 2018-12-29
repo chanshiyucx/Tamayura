@@ -27,7 +27,7 @@
       <div class="card-content setting">
         <ul>
           <li>
-            <span>主题色：</span>
+            <span class="color-label">主题色：</span>
             <span
               class="color-box"
               :style="getStyle('sidebar')"
@@ -35,26 +35,33 @@
             ></span>
           </li>
           <li>
-            <span>技能树：</span>
+            <span class="color-label">链接：</span>
             <span
               class="color-box"
-              :style="getStyle('skill-from')"
-              @click="setColorType('skill-from')"
-            ></span>
-            <i class="line" />
-            <span
-              class="color-box"
-              :style="getStyle('skill-to')"
-              @click="setColorType('skill-to')"
+              :style="getStyle('link')"
+              @click="setColorType('link')"
             ></span>
           </li>
           <li>
-            <span>二级标题：</span>
-            <span class="color-box" :style="getStyle('h2')" @click="setColorType('h2')"></span>
-          </li>
-          <li>
-            <span>三级标题：</span>
-            <span class="color-box" :style="getStyle('h3')" @click="setColorType('h3')"></span>
+            <span class="color-label">技能树：</span>
+              <span
+                class="color-box"
+                :style="getStyle('skill-from')"
+                @click="setColorType('skill-from')"
+              ></span>
+              <i class="line" />
+              <span
+                class="color-box"
+                :style="getStyle('skill-to')"
+                @click="setColorType('skill-to')"
+              ></span>
+              <span style="margin-left: 50px" class="color-label">滑槽：</span>
+              <span
+                class="color-box"
+                :style="getStyle('skill-bg')"
+                @click="setColorType('skill-bg')"
+              ></span>
+            </span>
           </li>
         </ul>
 
@@ -897,17 +904,17 @@ export default {
         case 'sidebar':
           style = { backgroundColor: this.color.sidebar }
           break
+        case 'link':
+          style = { backgroundColor: this.color.link }
+          break
         case 'skill-from':
           style = { backgroundColor: this.color.skill.from }
           break
         case 'skill-to':
           style = { backgroundColor: this.color.skill.to }
           break
-        case 'h2':
-          style = { backgroundColor: this.color.h2 }
-          break
-        case 'h3':
-          style = { backgroundColor: this.color.h3 }
+        case 'skill-bg':
+          style = { backgroundColor: this.color.skill.bg }
           break
       }
       if (type === this.colorType) {

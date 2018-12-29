@@ -1,10 +1,12 @@
 <template>
   <div id="Education">
-    <h2 :style="{ color: color.h2 }">Education 教育经历</h2>
+    <h2 :style="{ color: color.sidebar, borderBottomColor: getFadeColor(color.sidebar) }">
+      Education 教育经历
+    </h2>
     <div class="content">
       <ul>
         <li v-for="(item, i) in education" :key="i">
-          <div>毕业院校：{{ item.school }} {{ item.time }}</div>
+          <div>毕业院校：{{ item.school }} （{{ item.time }}）</div>
           <div>修习专业：{{ item.major }}</div>
           <div>修习课程：{{ item.course.join('、') }}</div>
         </li>
@@ -13,6 +15,7 @@
   </div>
 </template>
 <script>
+import Color from 'color'
 export default {
   name: 'Education',
   props: {
@@ -25,6 +28,13 @@ export default {
   },
   data() {
     return {}
+  },
+  methods: {
+    getFadeColor(color) {
+      return Color(color)
+        .fade(0.6)
+        .string()
+    }
   }
 }
 </script>

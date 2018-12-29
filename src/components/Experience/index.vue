@@ -1,6 +1,8 @@
 <template>
   <div id="Experience">
-    <h2 :style="{ color: color.h2 }">Experience 工作经历</h2>
+    <h2 :style="{ color: color.sidebar, borderBottomColor: getFadeColor(color.sidebar) }">
+      Experience 工作经历
+    </h2>
     <div class="content">
       <ul>
         <li v-for="(company, i) in experience" :key="i">
@@ -12,12 +14,28 @@
               alt=""
               crossOrigin="Anonymous"
             />
-            <h3 :style="{ color: color.h3 }">{{ company.companyName }} （{{ company.time }}）</h3>
+            <h3 :style="{ color: color.sidebar }">
+              {{ company.companyName }} （{{ company.time }}）
+            </h3>
           </div>
-          <div class="project-item" v-for="(item, i) in company.project" :key="i">
+          <div
+            class="project-item"
+            :style="{ borderColor: color.sidebar }"
+            v-for="(item, i) in company.project"
+            :key="i"
+          >
+            <span class="project-dot" :style="{ background: color.sidebar }"></span>
             <div>
               <span class="project-name"> {{ item.name }} - {{ item.description }} </span>
-              <a class="link" v-if="item.link" :href="item.link" target="_blank"> 产品主页 </a>
+              <a
+                v-if="item.link"
+                class="link"
+                :style="{ color: color.sidebar, borderColor: color.sidebar }"
+                :href="item.link"
+                target="_blank"
+              >
+                产品主页
+              </a>
             </div>
             <div>{{ item.summary }}</div>
             <ul class="preview">
@@ -45,6 +63,13 @@ export default {
   },
   data() {
     return {}
+  },
+  methods: {
+    getFadeColor(color) {
+      return Color(color)
+        .fade(0.6)
+        .string()
+    }
   }
 }
 </script>

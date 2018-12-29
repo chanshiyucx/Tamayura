@@ -17,7 +17,7 @@
       <h2>Concat 联系方式</h2>
       <ul>
         <li v-for="(item, i) in getContactList" :key="i">
-          {{ item.label }}：<a v-if="item.link" :href="item.link" target="_blank">{{
+          {{ item.label }}：<a v-if="item.link" :style="{ color: color.link }" :href="item.link" target="_blank">{{
             item.value
           }}</a>
           <span v-else>{{ item.value }}</span>
@@ -36,6 +36,7 @@
             :dotSize="0"
             :width="190"
             :processStyle="processStyle"
+            :bgStyle="bgStyle"
           ></vue-slider>
         </li>
       </ul>
@@ -104,16 +105,14 @@ export default {
     },
     getContactList() {
       const link = this.map.contact
-      return this.contact
-        .filter(o => !!o.type && !!o.value)
-        .map(o => ({
-          label: link[o.type] ? link[o.type].label : o.type,
-          value: o.value,
-          link:
-            link[o.type] && link[o.type].link
-              ? `${o.value.includes('http') ? '' : link[o.type].link}${o.value}`
-              : ''
-        }))
+      return this.contact.filter(o => !!o.type && !!o.value).map(o => ({
+        label: link[o.type] ? link[o.type].label : o.type,
+        value: o.value,
+        link:
+          link[o.type] && link[o.type].link
+            ? `${o.value.includes('http') ? '' : link[o.type].link}${o.value}`
+            : ''
+      }))
     },
     processStyle() {
       const { from, to } = this.color.skill
@@ -121,6 +120,12 @@ export default {
         backgroundImage: `-webkit-linear-gradient(left, ${from}, ${to})`,
         borderTopRightRadius: 0,
         borderBottomRightRadius: 0
+      }
+    },
+    bgStyle() {
+      const { bg } = this.color.skill
+      return {
+        backgroundColor: bg
       }
     }
   }

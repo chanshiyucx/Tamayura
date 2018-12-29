@@ -10,7 +10,14 @@
         width="80"
         height="80"
         viewBox="0 0 250 250"
-        style="fill:#8d9cd2; color:#fff; position: absolute; top: 0; border: 0; right: 0;"
+        :style="{
+          fill: color.sidebar,
+          color:'#fff',
+          position: 'absolute',
+          top: 0,
+          border: 0,
+          right: 0,
+        }"
         aria-hidden="true"
       >
         <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
@@ -178,7 +185,7 @@ export default {
     // 保存个人信息
     saveResume() {
       // 删除无用冗余信息
-      this.skill = this.skill.filter(o => o.name)
+      this.skill = this.skill.filter(o => o.type)
       this.skill.forEach(o => delete o.isEdit)
 
       const resume = {

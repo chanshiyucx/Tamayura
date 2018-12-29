@@ -47,14 +47,14 @@
   "experience": [
     {
       "companyLogo": "https://i.loli.net/2018/12/28/5c25e9ecc31f4.jpg",
-      "companyName": "卖萌科技有限公司",
+      "companyName": "神马科技有限公司",
       "time": "2016/7 - 2018/6",
       "project": [
         {
           "name": "非常NBの项目一",
-          "description": "描述一",
+          "description": "一句话描述",
           "link": "https://chanshiyu.com/",
-          "summary": "这个一个非常非常 NB の项目，至于多么 NB，，巴啦啦啦啦啦啦啦啦",
+          "summary": "这个一个非常非常 NB の项目，代码看不懂都是你们水平太低啦，巴啦啦啦啦啦啦啦啦啦啦啦啦",
           "previewImage": [
             "https://i.loli.net/2018/12/28/5c25c924979bf.png",
             "https://i.loli.net/2018/12/28/5c25c924979bf.png"
@@ -62,9 +62,9 @@
         },
         {
           "name": "非常NBの项目二",
-          "description": "描述二",
+          "description": "一句话描述",
           "link": "https://chanshiyu.com/",
-          "summary": "呃呃呃呃项目总结总结总结项目总结总结总结！！！！项目总结总结总结！！！！项目总结总结总结！！！！！！！！",
+          "summary": "这个一个非常非常 NB の项目，至于多么 NB，巴啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦",
           "previewImage": []
         }
       ]
@@ -75,10 +75,10 @@
       "time": "2018/6 - 至今",
       "project": [
         {
-          "name": "项目一",
-          "description": "描述一",
+          "name": "一个小项目项目",
+          "description": "一句话描述",
           "link": "https://chanshiyu.com/",
-          "summary": "项目总结总结总结！！！！项目总结总结总结！！！！项目总结总结总结！！！！项目总结总结总结！！！！",
+          "summary": "一个不怎么NB的项目，天天划水摸鱼、喝茶、睡裙、麻酱，围观大佬敲代码~~",
           "previewImage": [
             "https://i.loli.net/2018/12/28/5c25c924979bf.png",
             "https://i.loli.net/2018/12/28/5c25c924979bf.png"
