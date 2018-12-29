@@ -131,7 +131,8 @@ export default {
   methods: {
     // 下载 PDF
     readyGetPdf() {
-      const title = `${this.basicInfo.name || '百分百'}の简历`
+      const name = this.basicInfo.find(o => o.type === 'name').value
+      const title = `${name || '百分百'}の简历`
       this.getPdf(title)
     },
     // 打开菜单
